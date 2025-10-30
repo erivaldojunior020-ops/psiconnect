@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psiconnect</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #07f0d1, #077f8f);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    header {
+        text-align: center;
+        padding: 20px 0;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 2.8em;
+        color: #ffffff;
+    }
+
+    .menu {
+        display: flex;
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    .menu button {
+        background-color: rgba(255, 255, 255, 0.2);
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        color: #f7f6f3;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .menu button:hover {
+        background-color: rgba(255, 255, 255, 0.4);
+        transform: scale(1.05);
+    }
+
+    main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+        width: 100%;
+    }
+
+    .banner-container {
+        position: relative;
+        width: 90%;
+        max-width: 800px;
+        height: 250px;
+        margin: 20px 0;
+        overflow: hidden;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .banner {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        display: flex;
+        align-items: flex-end;
+        justify-content: left;
+    }
+
+    .banner.active {
+        opacity: 1;
+    }
+
+    .banner-text {
+        color: #ffffff;
+        font-size: 1.5em;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+        padding: 20px;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 14px 28px;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+        font-weight: bold;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.3s, transform 0.2s;
+        margin-top: 20px;
+    }
+
+    .btn:hover {
+        background-color: rgba(255, 255, 255, 0.4);
+        transform: scale(1.05);
+    }
+
+    .btn-container {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 25px;
+    }
+
+    /* Psicólogos em Destaque */
+    .destaques-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 25px;
+        margin-top: 40px;
+    }
+
+    .card-psicologo {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 20px;
+        width: 200px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card-psicologo:hover {
+        transform: scale(1.05);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
+    }
+
+    .card-psicologo img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #fff;
+        margin-bottom: 10px;
+    }
+
+    .card-psicologo h3 {
+        margin: 5px 0;
+        font-size: 1.2em;
+    }
+
+    .card-psicologo p {
+        margin: 3px 0;
+        font-size: 0.95em;
+    }
+</style>
+</head>
+
+<body>
+<header>
+    <h1>Psiconnect</h1>
+    <div class="menu">
+        <button onclick="window.location.href='inicio.html'">Início</button>
+        <button onclick="window.location.href='sobre.html'">Sobre</button>
+        <button onclick="window.location.href='servicos.html'">Serviços</button>
+        <button onclick="window.location.href='suporte.html'">Suporte</button>
+        <button onclick="window.location.href='sessoes.html'">Sessões</button>
+    </div>
+</header>
+
+<main>
+    <h2>Bem-vindo ao Psiconnect!</h2>
+    <p>Seu bem-estar começa aqui. Clique abaixo para agendar sua consulta ou acessar suas sessões.</p>
+
+    <div class="banner-container">
+        <div class="banner active" style="background-image: url('https://images.unsplash.com/photo-1587981850484-b42ec37f2c1b?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+            <div class="banner-text">Acolhimento e atenção para você</div>
+        </div>
+        <div class="banner subactive" style="background-image: url('https://plus.unsplash.com/premium_photo-1682124110958-972d4cabaf3a?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+            <div class="banner-text">Psicologia supervisionada com qualidade</div>
+        </div>
+        <div class="banner" style="background-image: url('https://images.unsplash.com/photo-1732770179629-d438b25be615?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+            <div class="banner-text">Cuidando do seu bem-estar emocional</div>
+        </div>
+    </div>
+
+    <div class="btn-container">
+        <button class="btn" onclick="window.location.href='psicologos.html'">Agendar Consulta</button>
+    </div>
+
+    <!-- Psicólogos em Destaque -->
+    <h2>Psicólogos em Destaque</h2>
+    <div class="destaques-container">
+        <div class="card-psicologo">
+            <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="João Silva">
+            <h3>João Silva</h3>
+            <p>Clínica Geral</p>
+            <p>CRP: 12345</p>
+        </div>
+        <div class="card-psicologo">
+            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Maria Lima">
+            <h3>Maria Lima</h3>
+            <p>Psicoterapia</p>
+            <p>CRP: 54321</p>
+        </div>
+        <div class="card-psicologo">
+            <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="Pedro Costa">
+            <h3>Pedro Costa</h3>
+            <p>Clínica Geral</p>
+            <p>CRP: 67890</p>
+        </div>
+    </div>
+
+</main>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const banners = document.querySelectorAll('.banner');
+    let current = 0;
+    function showBanner(index) {
+        banners.forEach((b, i) => { b.classList.toggle('active', i === index); });
+        current = index;
+    }
+    function nextBanner() { showBanner((current + 1) % banners.length); }
+    setInterval(nextBanner, 4000);
+});
+</script>
+
+</body>
+</html>
+
