@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Psiconnect - Dashboard Psicólogo</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #07f0d1, #077f8f);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      text-align: center;
+      padding: 20px 0;
+      width: 100%;
+    }
+    header h1 { margin: 0; font-size: 2.8em; color: #fff; }
+    .menu {
+      display: flex; gap: 15px; justify-content: center;
+      margin-top: 15px; flex-wrap: wrap;
+    }
+    .menu button {
+      background-color: rgba(255, 255, 255, 0.2);
+      border: none; padding: 10px 20px; border-radius: 10px;
+      color: #fff; font-weight: bold; cursor: pointer;
+      transition: 0.2s;
+    }
+    .menu button:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+      transform: scale(1.05);
+    }
+    main {
+      flex: 1; padding: 40px 20px;
+      display: flex; flex-direction: column; gap: 30px; align-items: center;
+    }
+    h2 { margin: 0; font-size: 2em; text-align: center; }
+    .dashboard-cards {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px; width: 100%; max-width: 1000px;
+    }
+    .card {
+      background: rgba(255,255,255,0.1);
+      border-radius: 20px; padding: 30px 20px;
+      text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+      transition: transform 0.3s, box-shadow 0.3s, background 0.5s;
+      display: flex; flex-direction: column; align-items: center; gap: 15px;
+      cursor: pointer; opacity: 0; transform: translateY(20px);
+    }
+    .card i { font-size: 2.5em; margin-bottom: 10px; color: #fff; }
+    .card h3 { margin: 0; font-size: 1.5em; }
+    .card p { margin: 0; font-size: 1.5em; font-weight: bold; }
+    .consultas-hoje { background: linear-gradient(135deg, #1abc9c, #16a085); }
+    .proximos-7dias { background: linear-gradient(135deg, #3498db, #2980b9); }
+    .pacientes-ativos { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+    .pendentes { background: linear-gradient(135deg, #e67e22, #d35400); }
+    .card:hover { transform: scale(1.07); box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
+    .modal {
+      display: none; position: fixed; z-index: 10; left: 0; top: 0;
+      width: 100%; height: 100%; background-color: rgba(0,0,0,0.7);
+      justify-content: center; align-items: center; padding: 20px;
+    }
+    .modal-content {
+      background: rgba(255,255,255,0.1);
+      padding: 30px 20px; border-radius: 20px;
+      max-width: 500px; width: 100%; text-align: center; position: relative;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .close-modal {
+      position: absolute; top: 10px; right: 15px;
+      font-size: 1.5em; cursor: pointer; color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Psiconnect</h1>
+  <div class="menu">
+   <a href="{% url 'inicio_psicologo' %}">
+  <button>Dashboard</button>
+</a>
+
+    <button>Consultas</button>
+    <button>Perfil</button>
+    <form action="{% url 'login' %}" method="post" style="display:inline;">
+      {% csrf_token %}
+      <button type="submit">Sair</button>
+    </form>
+  </div>
+</header>
+
+<main>
+  <h2>Bem-vindo(a), {{ request.user.username }}!</h2>
+
+  <div class="dashboard-cards">
+    <div class="card consultas-hoje" data-modal="modal-hoje">
+      <i class="fas fa-calendar-day"></i>
+      <h3>Consultas Hoje</h3>
+      <p>{{ consultas_hoje|default:"3" }}</p>
+    </div>
+    <div class="card proximos-7dias" data-modal="modal-7dias">
+      <i class="fas fa-calendar-week"></i>
+      <h3>Próximos 7 Dias</h3>
+      <p>{{ proximos_7_dias|default:"8" }}</p>
+    </div>
+    <div class="card pacientes-ativos" data-modal="modal-pacientes">
+      <i class="fas fa-user-friends"></i>
+      <h3>Pacientes Ativos</h3>
+      <p>{{ pacientes_ativos|default:"15" }}</p>
+    </div>
+    <div class="card pendentes" data-modal="modal-pendentes">
+      <i class="fas fa-clock"></i>
+      <h3>Consultas Pendentes</h3>
+      <p>{{ pendentes|default:"2" }}</p>
+    </div>
+  </div>
+</main>
+
+<!-- Modais -->
+<div id="modal-hoje" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h3>Consultas Hoje</h3>
+    {% for consulta in consultas_hoje_lista %}
+      <p>{{ consulta }}</p>
+    {% empty %}
+      <p>Nenhuma consulta hoje.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<div id="modal-7dias" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h3>Próximos 7 Dias</h3>
+    {% for consulta in proximos_7_dias_lista %}
+      <p>{{ consulta }}</p>
+    {% empty %}
+      <p>Sem consultas marcadas.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<div id="modal-pacientes" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h3>Pacientes Ativos</h3>
+    {% for paciente in pacientes_ativos_lista %}
+      <p>{{ paciente }}</p>
+    {% empty %}
+      <p>Sem pacientes ativos.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<div id="modal-pendentes" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h3>Consultas Pendentes</h3>
+    {% for pendente in pendentes_lista %}
+      <p>{{ pendente }}</p>
+    {% empty %}
+      <p>Nenhuma pendência.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((card, i) => {
+      setTimeout(() => {
+        card.style.opacity = 1;
+        card.style.transform = "translateY(0)";
+      }, i * 150);
+    });
+  });
+
+  const cards = document.querySelectorAll('.card');
+  const modals = document.querySelectorAll('.modal');
+  const closeButtons = document.querySelectorAll('.close-modal');
+
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      const modalId = card.dataset.modal;
+      document.getElementById(modalId).style.display = 'flex';
+    });
+  });
+
+  closeButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.target.closest('.modal').style.display = 'none';
+    });
+  });
+
+  window.addEventListener('click', (e) => {
+    modals.forEach(modal => {
+      if(e.target === modal) modal.style.display = 'none';
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escolher Psicólogo - Psiconnect</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #07f0d1, #077f8f);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: rgba(0,0,0,0.4);
+      padding: 40px;
+      border-radius: 15px;
+      width: 400px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+
+    .logo {
+      font-size: 2.3rem;
+      font-weight: bold;
+      color: #ffffff;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .slogan {
+      font-size: 1rem;
+      margin-bottom: 25px;
+      font-style: italic;
+      color: #ddd;
+    }
+
+    .psicologos {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .psicologo-card {
+      background: rgba(255, 255, 255, 0.12);
+      padding: 15px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      text-align: left;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .psicologo-card:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(1.03);
+    }
+
+    .psicologo-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ffffff;
+    }
+
+    .psicologo-card strong {
+      font-size: 1.2rem;
+      color: #ffffff;
+      display: block;
+    }
+
+    .psicologo-card div.info {
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    .cadastro {
+      margin-top: 25px;
+    }
+
+    .cadastro a {
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .cadastro a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="logo">Psiconnect</h1>
+    <p class="slogan">Escolha o psicólogo para continuar</p>
+
+    <div class="psicologos">
+      <a href="{% url 'agendamento' %}" class="psicologo-card">
+        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Dra. Ana">
+        <div>
+          <strong>Dra. Ana Silva</strong>
+          <div class="info">Psicóloga Clínica</div>
+        </div>
+      </a>
+
+      <a href="{% url 'agendamento' %}" class="psicologo-card">
+        <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Dr. João">
+        <div>
+          <strong>Dr. João Pereira</strong>
+          <div class="info">Psicólogo Infantil</div>
+        </div>
+      </a>
+
+      <a href="{% url 'agendamento' %}" class="psicologo-card">
+        <img src="https://randomuser.me/api/portraits/women/47.jpg" alt="Dra. Maria">
+        <div>
+          <strong>Dra. Maria Oliveira</strong>
+          <div class="info">Psicanalista</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="cadastro">
+      <a href="{% url 'inicio' %}">Voltar ao Início</a>
+    </div>
+  </div>
+</body>
+</html>

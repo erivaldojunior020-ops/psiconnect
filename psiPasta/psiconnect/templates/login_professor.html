@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Psiconnect</title>
+  <title>Login Professor - Psiconnect</title>
   <style>
     * {
       margin: 0;
@@ -22,12 +22,12 @@
     }
 
     .container {
-      background: rgba(0,0,0,0.4);
+      background: rgba(0, 0, 0, 0.4);
       padding: 40px;
       border-radius: 15px;
       width: 400px;
       text-align: center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     }
 
     .logo {
@@ -76,56 +76,38 @@
     }
 
     button:hover {
-      background: #ffffff;
       transform: scale(1.05);
     }
 
-    .cadastro {
-      margin-top: 20px;
+    .error {
+      color: #ff8080;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
     }
 
-    .cadastro p {
-      margin-bottom: 5px;
-    }
-
-    .cadastro a {
-      color: #ffffff;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .cadastro a:hover {
-      text-decoration: underline;
-    }
-
-    /* Efeito de foco nos inputs */
     input:focus {
       outline: 2px solid #07f0d1;
-      background: rgba(255,255,255,0.1);
+      background: rgba(255, 255, 255, 0.1);
     }
-
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Logo do site -->
     <h1 class="logo">Psiconnect</h1>
-    <p class="slogan">Conectando você ao cuidado psicológico online</p>
+    <p class="slogan">Área do Professor</p>
 
-    <p>Entre na sua conta ou crie uma nova.</p>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="error">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
 
-  <form class="form-login" action="{% url 'login' %}" method="POST">
-  {% csrf_token %}
-  <input type="text" name="username" placeholder="Usuário" required>
-  <input type="password" name="senha" placeholder="Senha" required>
-  <button type="submit">Entrar</button>
-</form>
-
-
-    <div class="cadastro">
-      <p>Não tem conta?</p>
-      <a href="cadastro.html">Cadastrar-se</a>
-    </div>
+    <form class="form-login" method="post">
+      {% csrf_token %}
+      <input type="text" name="username" placeholder="Usuário" required>
+      <input type="password" name="password" placeholder="Senha" required>
+      <button type="submit">Entrar</button>
+    </form>
   </div>
 </body>
 </html>

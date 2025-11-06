@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Psiconnect</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #07f0d1, #077f8f);
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: rgba(0,0,0,0.4);
+      padding: 40px;
+      border-radius: 15px;
+      width: 400px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+
+    .logo {
+      font-size: 2.3rem;
+      font-weight: bold;
+      color: #ffffff;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .slogan {
+      font-size: 1rem;
+      margin-bottom: 25px;
+      font-style: italic;
+      color: #ddd;
+    }
+
+    p {
+      margin-bottom: 20px;
+      font-size: 1rem;
+    }
+
+    .form-login {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input {
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #333;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    .botao-secundario {
+      background: transparent;
+      border: 2px solid #ffffff;
+      color: #ffffff;
+      transition: 0.3s;
+    }
+
+    .botao-secundario:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.05);
+    }
+
+    .cadastro {
+      margin-top: 20px;
+    }
+
+    .cadastro p {
+      margin-bottom: 5px;
+    }
+
+    .cadastro a {
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .cadastro a:hover {
+      text-decoration: underline;
+    }
+
+    input:focus {
+      outline: 2px solid #07f0d1;
+      background: rgba(255,255,255,0.1);
+    }
+
+    .messages {
+      list-style: none;
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.2);
+      padding: 10px 20px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        {{ message }}
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <div class="container">
+    <h1 class="logo">Psiconnect</h1>
+    <p class="slogan">Conectando você ao cuidado psicológico online</p>
+
+    <p>Entre na sua conta ou crie uma nova.</p>
+
+    <form class="form-login" action="{% url 'login_paciente' %}" method="POST">
+      {% csrf_token %}
+      <input type="email" name="email" placeholder="email" required>
+      <input type="password" name="senha" placeholder="Senha" required>
+      <button type="submit" name="tipo" value="paciente">Entrar como Paciente</button>
+    </form>
+
+    <!-- Botão separado para psicólogo -->
+    <form action="{% url 'login_psicologo' %}" method="GET" style="margin-top: 10px;">
+      <button class="botao-secundario" type="submit">Sou Psicólogo</button>
+    </form>
+
+    <div class="cadastro">
+      <p>Não tem conta?</p>
+      <a href="{% url 'cadastro_paciente' %}">Cadastrar-se</a>
+    </div>
+  </div>
+</body>
+</html>

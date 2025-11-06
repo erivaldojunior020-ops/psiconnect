@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro - Psiconnect</title>
+  <style>
+    /* ===== RESET ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ===== BODY ===== */
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(135deg, #07f0d1, #077f8f);
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ===== CONTAINER ===== */
+    .container {
+      background-color: rgba(255, 255, 255, 0.15);
+      padding: 40px 35px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      text-align: center;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    /* ===== LOGO ===== */
+    .logo {
+      font-size: 2.2rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    .slogan {
+      font-size: 1rem;
+      margin-bottom: 25px;
+      opacity: 0.9;
+    }
+
+    /* ===== FORM ===== */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      font-size: 0.9rem;
+      text-align: left;
+      color: #e9f9f8;
+      margin-bottom: 5px;
+    }
+
+    input {
+      padding: 10px 14px;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    input:focus {
+      box-shadow: 0 0 5px #07f0d1;
+    }
+
+    button {
+      background-color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      color: #004d4d;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s ease;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: hsl(0, 0%, 100%);
+      transform: scale(1.02);
+    }
+
+    /* ===== LOGIN LINK ===== */
+    .cadastro {
+      margin-top: 20px;
+      font-size: 0.9rem;
+    }
+
+    .cadastro a {
+      color: #ffffff;
+      font-weight: bold;
+      text-decoration: none;
+      margin-left: 5px;
+      transition: color 0.3s;
+    }
+
+    .cadastro a:hover {
+      color: #fff;
+    }
+
+    /* ===== MENSAGENS DJANGO ===== */
+    .messages {
+      position: absolute;
+      top: 15px;
+      list-style: none;
+      width: 90%;
+      max-width: 380px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .messages li {
+      padding: 10px;
+      margin-bottom: 5px;
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    .messages li.success {
+      background-color: rgba(0, 255, 100, 0.2);
+      border: 1px solid #00ff64;
+    }
+
+    .messages li.error {
+      background-color: rgba(255, 50, 50, 0.2);
+      border: 1px solid #ff4c4c;
+    }
+
+    /* ===== ANIMAÇÃO ===== */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        {{ message }}
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <div class="container">
+    <h1 class="logo">Psiconnect</h1>
+    <p class="slogan">Crie sua conta para começar</p>
+
+    <form action="{% url 'cadastro_paciente' %}" method="POST">
+      {% csrf_token %}
+      <label for="username">Nome completo</label>
+      <input type="text" id="username" name="username" required>
+
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" name="senha" required>
+
+      <button type="submit">Cadastrar</button>
+    </form>
+
+    <div class="cadastro">
+      <p>Já tem conta?<a href="{% url 'login_paciente' %}">Entrar</a></p>
+    </div>
+  </div>
+</body>
+</html>
+<wbr></wbr>
