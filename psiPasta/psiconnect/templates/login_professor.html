@@ -102,9 +102,9 @@
       {% endfor %}
     {% endif %}
 
-    <form class="form-login" method="post">
+    <form class="form-login" method="POST">
       {% csrf_token %}
-      <input type="text" name="username" placeholder="Usuário" required>
+      <input type="email" name="email" placeholder="email" required>
       <input type="password" name="password" placeholder="Senha" required>
       <button type="submit">Entrar</button>
     </form>

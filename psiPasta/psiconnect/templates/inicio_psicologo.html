@@ -88,7 +88,7 @@
 
     <button>Consultas</button>
     <button>Perfil</button>
-    <form action="{% url 'login' %}" method="post" style="display:inline;">
+    <form action="{% url 'login_psicologo' %}" method="post" style="display:inline;">
       {% csrf_token %}
       <button type="submit">Sair</button>
     </form>

@@ -86,6 +86,10 @@ DATABASES = {
 
 AUTH_USER_MODEL = 'psiconnect.CustomUser'
 
+AUTHENTICATION_BACKENDS = [
+    'psiconnect.backends.EmailBackend',  # ← substitua 'seu_app' pelo nome real do app
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 
 

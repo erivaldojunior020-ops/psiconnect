@@ -34,21 +34,26 @@ def cadastro_paciente(request):
         return redirect('/auth/login_paciente/')
 
 
+
 def login_paciente(request):
     if request.method == "GET":
         return render(request, 'login_paciente.html')
-    else:
-        email = request.POST.get('email')
-        senha = request.POST.get('senha')
 
-        user = authenticate(email=email, password=senha)
+    email = request.POST.get('email')
+    senha = request.POST.get('senha')
 
-        if user:
+    user = authenticate(request, email=email, password=senha)
+
+    if user:
+        if user.user_type == 'paciente':
             login_django(request, user)
             return redirect('inicio_paciente')
         else:
-            messages.error(request, 'Email ou senha inválidos.')
-            return render(request, 'login_paciente.html')
+            messages.error(request, 'Apenas pacientes podem acessar esta área.')
+    else:
+        messages.error(request, 'Email ou senha inválidos.')
+
+    return render(request, 'login_paciente.html')
 
 def inicio_paciente(request):
     if request.user.is_authenticated:
@@ -69,26 +74,26 @@ def sessoes_paciente(request):
 
 
 
-
 # --- LOGIN PROFESSOR (somente superusuário) ---
 def login_professor(request):
+    if request.method == "GET":
+        return render(request, 'login_professor.html')
 
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+    email = request.POST.get('email')
+    senha = request.POST.get('password')
 
-        user = authenticate(request, username=username, password=password)
+    user = authenticate(request, username=email, password=senha)
 
-        if user is not None:
-            if user.is_superuser:  # 🔒 Somente superuser
-                login_django(request, user)
-                return redirect('cadastrar_aluno')
-            else:
-                messages.error(request, "Apenas professores (superusuários) podem acessar esta área.")
+    if user:
+        if user.user_type == 'professor' and user.is_superuser:
+            login_django(request, user)
+            return redirect('cadastrar_aluno')
         else:
-            messages.error(request, "Usuário ou senha inválidos.")
+            messages.error(request, 'Apenas superusuários (professores) podem acessar esta área.')
+    else:
+        messages.error(request, 'Email ou senha inválidos.')
 
-    return render(request, 'login_professor.html')
+    return render(request, 'login_professor.html')  
 
 
 
@@ -101,24 +106,26 @@ def cadastrar_aluno(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+        email = request.POST.get('email')
 
-        if not username or not password:
+        if not username or not password or not email:
             messages.error(request, "Preencha todos os campos.")
             return redirect('cadastrar_aluno')
 
-        if CustomUser.objects.filter(username=username).exists():
-            messages.error(request, "Já existe um aluno com esse nome de usuário.")
+        if CustomUser.objects.filter(email=email).exists():
+            messages.error(request, "Já existe um psicologo com esse nome de usuário.")
             return redirect('cadastrar_aluno')
 
         # Cria o aluno
-        aluno = CustomUser.objects.create_user(
+        psicologo = CustomUser.objects.create_user(
             username=username,
             password=password,
-            user_type='aluno'
+            email=email,
+            user_type='psicologo'
         )
-        aluno.save()
+        psicologo.save()
 
-        messages.success(request, f"Aluno '{username}' cadastrado com sucesso!")
+        messages.success(request, f"psicologo '{username}' cadastrado com sucesso!")
         return redirect('cadastrar_aluno')
 
     return render(request, 'cadastrar_aluno.html')
@@ -127,16 +134,26 @@ def cadastrar_aluno(request):
 
 # --- LOGIN PSICÓLOGO (ALUNO) ---
 def login_psicologo(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
+    if request.method == "GET":
+        return render(request, 'login_psicologo.html')
 
-        if user is not None and getattr(user, 'user_type', '') == 'aluno':
+    email = request.POST.get('email')
+    senha = request.POST.get('password')
+    print("Tentando login:", email, senha)
+
+    user = authenticate(request, email=email, password=senha)
+    print("Resultado do authenticate:", user)
+
+    if user:
+        print("User type:", user.user_type)
+        if user.user_type == 'psicologo':
             login_django(request, user)
+            print("Login bem-sucedido!")
             return redirect('inicio_psicologo')
         else:
-            messages.error(request, 'Credenciais inválidas ou acesso negado.')
+            messages.error(request, 'Apenas psicólogos podem acessar esta área.')
+    else:
+        messages.error(request, 'Email ou senha inválidos.')
 
     return render(request, 'login_psicologo.html')
 
@@ -144,7 +161,7 @@ def login_psicologo(request):
 # --- INÍCIO PSICÓLOGO (ALUNO) ---
 @login_required
 def inicio_psicologo(request):
-    if getattr(request.user, 'user_type', '') != 'aluno':
+    if getattr(request.user, 'user_type', '') != 'psicologo':
         return redirect('login_psicologo')
     return render(request, 'inicio_psicologo.html')
 
