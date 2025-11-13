@@ -18,6 +18,6 @@ urlpatterns = [
     
     path('login_psicologo/', views.login_psicologo, name='login_psicologo'),
     path('inicio_psicologo/', views.inicio_psicologo, name='inicio_psicologo'),
-    
+    path('perfil_psicologo/', views.perfil_psicologo, name='perfil_psicologo'),
 
 ]

@@ -19,6 +19,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 20px;
     }
 
     .container {
@@ -26,6 +27,7 @@
       padding: 40px;
       border-radius: 15px;
       width: 400px;
+      max-width: 100%;
       text-align: center;
       box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     }
@@ -49,18 +51,18 @@
     .psicologos {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 16px;
     }
 
     .psicologo-card {
       background: rgba(255, 255, 255, 0.12);
-      padding: 15px 20px;
+      padding: 12px 14px;
       border-radius: 12px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: 0.28s;
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 14px;
       text-align: left;
       text-decoration: none;
       color: inherit;
@@ -68,30 +70,33 @@
 
     .psicologo-card:hover {
       background: rgba(255, 255, 255, 0.25);
-      transform: scale(1.03);
+      transform: scale(1.02);
     }
 
     .psicologo-card img {
-      width: 80px;
-      height: 80px;
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
       object-fit: cover;
       border: 3px solid #ffffff;
+      flex-shrink: 0;
     }
 
     .psicologo-card strong {
-      font-size: 1.2rem;
+      font-size: 1.05rem;
       color: #ffffff;
       display: block;
+      line-height: 1.1;
     }
 
-    .psicologo-card div.info {
-      font-size: 1rem;
-      color: #fff;
+    .psicologo-card .info {
+      font-size: 0.95rem;
+      color: #f0f0f0;
+      opacity: 0.95;
     }
 
     .cadastro {
-      margin-top: 25px;
+      margin-top: 22px;
     }
 
     .cadastro a {
@@ -103,41 +108,51 @@
     .cadastro a:hover {
       text-decoration: underline;
     }
+
+    .empty {
+      color: #f7f7f7;
+      opacity: 0.9;
+      padding: 12px 0;
+    }
   </style>
 </head>
 <body>
+  {% load static %}
   <div class="container">
     <h1 class="logo">Psiconnect</h1>
     <p class="slogan">Escolha o psicólogo para continuar</p>
 
     <div class="psicologos">
-      <a href="{% url 'agendamento' %}" class="psicologo-card">
-        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Dra. Ana">
-        <div>
-          <strong>Dra. Ana Silva</strong>
-          <div class="info">Psicóloga Clínica</div>
-        </div>
-      </a>
+      {% if psicologos %}
+        {% for psicologo in psicologos %}
+          <a href="{% url 'agendamento_paciente' %}" class="psicologo-card">
+            {% if psicologo.foto %}
+              <img src="{{ psicologo.foto.url }}" alt="{{ psicologo.user.get_full_name|default:psicologo.user.username }}">
+            {% else %}
+              <img src="{% static 'img/default-user.png' %}" alt="{{ psicologo.user.get_full_name|default:psicologo.user.username }}">
+            {% endif %}
 
-      <a href="{% url 'agendamento' %}" class="psicologo-card">
-        <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Dr. João">
-        <div>
-          <strong>Dr. João Pereira</strong>
-          <div class="info">Psicólogo Infantil</div>
-        </div>
-      </a>
-
-      <a href="{% url 'agendamento' %}" class="psicologo-card">
-        <img src="https://randomuser.me/api/portraits/women/47.jpg" alt="Dra. Maria">
-        <div>
-          <strong>Dra. Maria Oliveira</strong>
-          <div class="info">Psicanalista</div>
-        </div>
-      </a>
+            <div>
+              <strong>
+                {{ psicologo.user.get_full_name|default:psicologo.user.username }}
+              </strong>
+              <div class="info">
+                {% if psicologo.especialidade %}
+                  {{ psicologo.especialidade }}
+                {% else %}
+                  Psicólogo(a)
+                {% endif %}
+              </div>
+            </div>
+          </a>
+        {% endfor %}
+      {% else %}
+        <div class="empty">Nenhum psicólogo encontrado no momento.</div>
+      {% endif %}
     </div>
 
     <div class="cadastro">
-      <a href="{% url 'inicio' %}">Voltar ao Início</a>
+      <a href="{% url 'inicio_paciente' %}">Voltar ao Início</a>
     </div>
   </div>
 </body>

@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from .models import PerfilPsicologo  # certifique-se de importar
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as login_django
@@ -62,9 +63,9 @@ def inicio_paciente(request):
     return redirect('login_paciente')
 
 def lista_psicologos(request):
-    if request.user.is_authenticated:
-        return render(request, 'lista_psicologos.html')
-    return redirect('login_paciente')
+    psicologos = PerfilPsicologo.objects.filter(user__user_type='psicologo')
+    return render(request, 'lista_psicologos.html', {'psicologos': psicologos})
+
 
 def agendamento_paciente(request):
     return render(request, 'agendamento_paciente.html')
@@ -138,7 +139,7 @@ def login_psicologo(request):
         return render(request, 'login_psicologo.html')
 
     email = request.POST.get('email')
-    senha = request.POST.get('password')
+    senha = request.POST.get('senha')
     print("Tentando login:", email, senha)
 
     user = authenticate(request, email=email, password=senha)
@@ -166,6 +167,28 @@ def inicio_psicologo(request):
     return render(request, 'inicio_psicologo.html')
 
 
+@login_required
+def perfil_psicologo(request):
+    # Pega (ou cria) o perfil do psicólogo logado
+    perfil, created = PerfilPsicologo.objects.get_or_create(user=request.user)
+
+    if request.method == "POST":
+        perfil.nome_completo = request.POST.get("nome_completo")
+        perfil.crp = request.POST.get("crp")
+        perfil.telefone = request.POST.get("telefone")
+        perfil.especializacao = request.POST.get("especializacao")
+        perfil.bio = request.POST.get("bio")
+
+        if "foto" in request.FILES:
+            perfil.foto = request.FILES["foto"]
+
+        perfil.save()
+        messages.success(request, "Perfil atualizado com sucesso!")
+        return redirect("perfil_psicologo")
+
+    context = {
+        "perfil": perfil
+    }
+    return render(request, "perfil_psicologo.html", context)
 
 
-    

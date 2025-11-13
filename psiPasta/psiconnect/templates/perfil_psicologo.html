@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Psiconnect - Perfil do Psicólogo</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #07f0d1, #077f8f);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.8em;
+      color: #fff;
+    }
+
+    .menu {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    .menu button {
+      background-color: rgba(255, 255, 255, 0.2);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .menu button:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+      transform: scale(1.05);
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 20px;
+    }
+
+    .edit-card {
+      background: rgba(255,255,255,0.1);
+      padding: 30px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .edit-card h2 {
+      text-align: center;
+      margin: 0;
+      font-size: 2em;
+    }
+
+    .edit-card label {
+      font-weight: bold;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .edit-card input[type="text"],
+    .edit-card input[type="email"],
+    .edit-card input[type="tel"],
+    .edit-card input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      font-size: 1em;
+    }
+
+    .edit-card input[type="file"] {
+      background-color: rgba(255,255,255,0.2);
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .edit-card button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: rgba(255,255,255,0.2);
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 10px;
+    }
+
+    .edit-card button:hover {
+      background-color: rgba(255,255,255,0.4);
+      transform: scale(1.05);
+    }
+
+    .preview-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border: 2px solid #fff;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Psiconnect</h1>
+  <div class="menu">
+    <a href="{% url 'perfil_psicologo' %}"><button>Perfil</button></a>
+    <a href="{% url 'inicio_psicologo' %}"><button>Sair</button></a>
+  </div>
+</header>
+
+<main>
+  <form method="POST" enctype="multipart/form-data" class="edit-card">
+    {% csrf_token %}
+    <h2>Perfil do Psicólogo</h2>
+
+    <label>Foto de Perfil</label>
+    {% if perfil.foto %}
+      <img src="{{ perfil.foto.url }}" alt="Foto" class="preview-img" id="preview">
+    {% else %}
+      <img src="https://via.placeholder.com/100" alt="Foto" class="preview-img" id="preview">
+    {% endif %}
+    <input type="file" id="foto" name="foto">
+
+    <label>Nome Completo</label>
+    <input type="text" name="nome_completo" value="{{ perfil.nome_completo }}">
+
+    <label>CRP</label>
+    <input type="text" name="crp" value="{{ perfil.crp }}">
+
+    <label>Especialização</label>
+    <input type="text" name="especializacao" value="{{ perfil.especializacao|default:'' }}">
+
+    <label>Telefone</label>
+    <input type="tel" name="telefone" value="{{ perfil.telefone|default:'' }}">
+
+    <label>Bio</label>
+    <input type="text" name="bio" value="{{ perfil.bio|default:'' }}">
+
+    <button type="submit">Salvar Alterações</button>
+  </form>
+</main>
+
+<script>
+  // Preview da foto
+  const fotoInput = document.getElementById('foto');
+  const preview = document.getElementById('preview');
+
+  if (fotoInput) {
+    fotoInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+      }
+    });
+  }
+</script>
+
+</body>
+</html>

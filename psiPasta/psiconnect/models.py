@@ -15,16 +15,14 @@ class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
-        # 👇 define automaticamente o tipo
         extra_fields.setdefault('user_type', 'professor')
-
         return self.create_user(email, password, **extra_fields)
 
 
 class CustomUser(AbstractUser):
     USER_TYPE_CHOICES = (
         ('professor', 'Professor'),
-        ('psicologo', 'Psicólogo'),
+        ('psicologo', 'Psicologo'),
         ('paciente', 'Paciente'),
     )
 
@@ -35,7 +33,21 @@ class CustomUser(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
-    objects = CustomUserManager()  # 👈 usa o manager customizado
+    objects = CustomUserManager()
 
     def __str__(self):
         return f"{self.email} ({self.get_user_type_display()})"
+
+
+# perfil do psicólogo
+class PerfilPsicologo(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='perfil_psicologo')
+    nome_completo = models.CharField(max_length=150)
+    crp = models.CharField(max_length=20, unique=True, blank=True, null=True)
+    especializacao = models.CharField(max_length=150, blank=True, null=True)
+    telefone = models.CharField(max_length=20, blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
+    foto = models.ImageField(upload_to='perfil_fotos/', blank=True, null=True)
+
+    def __str__(self):
+        return f"Perfil de {self.user.email}"
