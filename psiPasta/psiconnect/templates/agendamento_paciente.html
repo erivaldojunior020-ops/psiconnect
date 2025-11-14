@@ -48,6 +48,24 @@
       color: #e0f7f5;
     }
 
+    .perfil {
+      margin-bottom: 25px;
+    }
+
+    .perfil img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #fff;
+      margin-bottom: 10px;
+    }
+
+    .perfil h2 {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
     form {
       display: flex;
       flex-direction: column;
@@ -106,16 +124,6 @@
       text-decoration: none;
       font-weight: bold;
     }
-    select {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
-  font-size: 1rem;
-  background: rgba(0, 0, 0, 0.15);
-  color: #ffffff; /* muda a cor do texto para preto */
-}
-
 
     .cadastro a:hover {
       text-decoration: underline;
@@ -124,26 +132,33 @@
 </head>
 <body>
   <div class="container">
+
     <h1 class="logo">Psiconnect</h1>
     <p class="slogan">Agende sua consulta online</p>
 
- <form method="POST">
-  {% csrf_token %}
-  <input type="text" name="nome" placeholder="Nome completo" required>
-  <input type="date" name="data" required>
-  <input type="time" name="hora" required>
-  <textarea name="observacoes" placeholder="Observações (opcional)"></textarea>
-  <button type="submit">Agendar</button>
-</form>
+    <!-- Perfil do Psicólogo -->
+    <div class="perfil">
+      <img src="{{ psicologo.foto.url }}" alt="Foto do Psicólogo">
+      <h2>{{ psicologo.nome }}</h2>
+    </div>
 
-{% if mensagem %}
-  <p style="color: #fff; margin-top: 15px;">{{ mensagem }}</p>
-{% endif %}
+    <!-- Formulário -->
+    <form method="POST">
+      {% csrf_token %}
+      <input type="date" name="data" required>
+      <input type="time" name="hora" required>
+      <textarea name="observacoes" placeholder="Observações (opcional)"></textarea>
+      <button type="submit">Agendar</button>
+    </form>
 
+    {% if mensagem %}
+      <p style="color: #fff; margin-top: 15px;">{{ mensagem }}</p>
+    {% endif %}
 
     <div class="cadastro">
       <a href="{% url 'inicio_paciente' %}">Voltar ao Início</a>
     </div>
+
   </div>
 </body>
 </html>

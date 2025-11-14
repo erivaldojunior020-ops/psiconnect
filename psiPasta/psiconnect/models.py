@@ -1,5 +1,6 @@
 from django.contrib.auth.models import BaseUserManager, AbstractUser
 from django.db import models
+from django.conf import settings
 
 
 class CustomUserManager(BaseUserManager):
@@ -51,3 +52,15 @@ class PerfilPsicologo(models.Model):
 
     def __str__(self):
         return f"Perfil de {self.user.email}"
+
+
+class Sessao(models.Model):
+    paciente = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    psicologo = models.ForeignKey('PerfilPsicologo', on_delete=models.CASCADE)
+    data = models.DateField()
+    hora = models.TimeField()
+    observacoes = models.TextField(blank=True, null=True)
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.paciente.username} com {self.psicologo.nome} em {self.data} às {self.hora}"

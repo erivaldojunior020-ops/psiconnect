@@ -63,9 +63,9 @@
       display: flex;
       align-items: center;
       gap: 14px;
-      text-align: left;
       text-decoration: none;
       color: inherit;
+      text-align: left;
     }
 
     .psicologo-card:hover {
@@ -125,17 +125,19 @@
     <div class="psicologos">
       {% if psicologos %}
         {% for psicologo in psicologos %}
-          <a href="{% url 'agendamento_paciente' %}" class="psicologo-card">
+          <a class="psicologo-card" href="{% url 'agendamento_paciente' psicologo.id %}">
+            
             {% if psicologo.foto %}
-              <img src="{{ psicologo.foto.url }}" alt="{{ psicologo.user.get_full_name|default:psicologo.user.username }}">
+              <img src="{{ psicologo.foto.url }}" alt="{{ psicologo.user.get_full_name|default:psicologo.user.username }}
+">
             {% else %}
-              <img src="{% static 'img/default-user.png' %}" alt="{{ psicologo.user.get_full_name|default:psicologo.user.username }}">
+              <img src="{% static 'img/default-user.png' %}" alt="{{ psicologo.get_full_name|default:psicologo.username }}">
             {% endif %}
 
             <div>
-              <strong>
-                {{ psicologo.user.get_full_name|default:psicologo.user.username }}
-              </strong>
+              <strong>{{ psicologo.user.get_full_name|default:psicologo.user.username }}
+</strong>
+
               <div class="info">
                 {% if psicologo.especialidade %}
                   {{ psicologo.especialidade }}
@@ -144,6 +146,7 @@
                 {% endif %}
               </div>
             </div>
+
           </a>
         {% endfor %}
       {% else %}

@@ -6,9 +6,10 @@ urlpatterns = [
     path ('login_paciente/', views.login_paciente, name='login_paciente'),
     path ('inicio_paciente/', views.inicio_paciente, name="inicio_paciente"),
     path('lista_psicologos/', views.lista_psicologos, name='lista_psicologos'),
-    path('agendamento_paciente/', views.agendamento_paciente, name='agendamento_paciente'),
-    path('sessoes_paciente/', views.sessoes_paciente, name='sessoes_paciente'),
 
+    
+    path('agendamento_paciente/<int:psicologo_id>/', views.agendamento_paciente, name='agendamento_paciente'),
+    path('sessoes_paciente/', views.sessoes_paciente, name='sessoes_paciente'),
 
     
     path('login_professor/', views.login_professor, name='login_professor'),

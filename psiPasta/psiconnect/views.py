@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from .models import PerfilPsicologo  # certifique-se de importar
+from .models import PerfilPsicologo, Sessao  # certifique-se de importar
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as login_django
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser
 from django.contrib.auth import get_user_model
@@ -67,11 +67,32 @@ def lista_psicologos(request):
     return render(request, 'lista_psicologos.html', {'psicologos': psicologos})
 
 
-def agendamento_paciente(request):
-    return render(request, 'agendamento_paciente.html')
+@login_required
+def agendamento_paciente(request, psicologo_id):
+    psicologo = get_object_or_404(PerfilPsicologo, id=psicologo_id)
+
+    if request.method == "POST":
+        data = request.POST.get("data")
+        hora = request.POST.get("hora")
+
+        Sessao.objects.create(
+            paciente=request.user,
+            psicologo=psicologo,
+            data=data,
+            hora=hora
+        )
+
+        messages.success(request, "Sessão agendada com sucesso!")
+        return redirect("sessoes_paciente")
+
+    return render(request, "agendamento_paciente.html", {"psicologo": psicologo})
+
     
+@login_required
 def sessoes_paciente(request):
-    return render(request,'sessoes_paciente.html')
+    sessoes = Sessao.objects.filter(paciente=request.user).order_by("data", "hora")
+    return render(request, "sessoes_paciente.html", {"sessoes": sessoes})
+
 
 
 
