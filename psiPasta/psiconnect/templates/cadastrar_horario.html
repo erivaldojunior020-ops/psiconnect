@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastrar Horários - Psiconnect</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: linear-gradient(135deg, #07f0d1, #077f8f);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      color: #fff;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.35);
+      padding: 35px;
+      border-radius: 15px;
+      width: 420px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 2rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      background: #fff;
+      color: #333;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    button:hover {
+      background: #e6e6e6;
+      transform: scale(1.05);
+    }
+
+    .lista-horarios {
+      margin-top: 25px;
+      text-align: left;
+    }
+
+    .horario-item {
+      background: rgba(255,255,255,0.15);
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <h1>Cadastrar Horários</h1>
+
+  <form method="POST">
+    {% csrf_token %}
+    <input type="date" name="data" required>
+    <input type="time" name="hora" required>
+    <button type="submit">Adicionar Horário</button>
+  </form>
+
+  <h3>Horários cadastrados</h3>
+  <div class="lista-horarios">
+    {% for h in horarios %}
+      <div class="horario-item">
+        {{ h.data }} - {{ h.hora }}  
+        {% if h.disponivel %}
+          (Disponível)
+        {% else %}
+          (Reservado)
+        {% endif %}
+      </div>
+    {% empty %}
+      <p>Nenhum horário cadastrado.</p>
+    {% endfor %}
+  </div>
+
+  <br>
+  <a href="{% url 'inicio_psicologo' %}" style="color:white;">Voltar</a>
+
+</div>
+
+</body>
+</html>

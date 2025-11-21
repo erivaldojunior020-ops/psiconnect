@@ -1,6 +1,8 @@
 from django.contrib.auth.models import BaseUserManager, AbstractUser
 from django.db import models
 from django.conf import settings
+from django.contrib.auth import get_user_model
+
 
 
 class CustomUserManager(BaseUserManager):
@@ -62,5 +64,39 @@ class Sessao(models.Model):
     observacoes = models.TextField(blank=True, null=True)
     criado_em = models.DateTimeField(auto_now_add=True)
 
+    STATUS_CHOICES = (
+        ('pendente', 'Pendente'),
+        ('confirmado', 'Confirmado'),
+        ('cancelado', 'Cancelado'),
+    )
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pendente')
+
     def __str__(self):
-        return f"{self.paciente.username} com {self.psicologo.nome} em {self.data} às {self.hora}"
+        return f"{self.paciente.email} com {self.psicologo.nome_completo} em {self.data} às {self.hora}"
+
+
+class HorarioDisponivel(models.Model):
+    psicologo = models.ForeignKey(PerfilPsicologo, on_delete=models.CASCADE)
+    data = models.DateField()
+    hora = models.TimeField()
+    disponivel = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.psicologo.user.username} - {self.data} {self.hora}"
+    
+
+
+
+
+
+User = get_user_model()
+
+class Mensagem(models.Model):
+    remetente = models.ForeignKey(User, on_delete=models.CASCADE, related_name="mensagens_enviadas")
+    destinatario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="mensagens_recebidas")
+    consulta = models.ForeignKey(Sessao, on_delete=models.CASCADE)
+    texto = models.TextField()
+    data_envio = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.remetente} → {self.destinatario} ({self.consulta.id})"

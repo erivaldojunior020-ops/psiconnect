@@ -83,10 +83,14 @@
   <h1>Psiconnect</h1>
   <div class="menu">
    <a href="{% url 'inicio_psicologo' %}">
-  <button>Dashboard</button>
+  <button>Inicio</button>
 </a>
-
+  <a href="{% url 'cadastrar_horario' %}">
+  <button>cadastrar horario</button>
+</a>
+<a href="{% url 'consultas_psicologo' %}">
     <button>Consultas</button>
+    </a>
      <a href= "{% url 'perfil_psicologo' %}">
       <button>Perfil</button>
     </a> 

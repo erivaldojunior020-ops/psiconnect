@@ -244,24 +244,23 @@
 
     <h2>Psicólogos em Destaque</h2>
     <div class="destaques-container">
-        <div class="card-psicologo">
-            <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="João Silva">
-            <h3>João Silva</h3>
-            <p>Clínica Geral</p>
-            <p>CRP: 12345</p>
-        </div>
-        <div class="card-psicologo">
-            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Maria Lima">
-            <h3>Maria Lima</h3>
-            <p>Psicoterapia</p>
-            <p>CRP: 54321</p>
-        </div>
-        <div class="card-psicologo">
-            <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="Pedro Costa">
-            <h3>Pedro Costa</h3>
-            <p>Clínica Geral</p>
-            <p>CRP: 67890</p>
-        </div>
+        <div class="destaques-container">
+
+    {% for p in destaques %}
+    <div class="card-psicologo">
+        <img src="{% if p.foto %}{{ p.foto.url }}{% else %}https://via.placeholder.com/100{% endif %}" alt="{{ p.nome_completo }}">
+        
+        <h3>{{ p.nome_completo }}</h3>
+
+        <p>{{ p.especializacao|default:"Psicologia" }}</p>
+
+        <p>CRP: {{ p.crp|default:"Não informado" }}</p>
+    </div>
+    {% empty %}
+        <p>Nenhum psicólogo cadastrado ainda.</p>
+    {% endfor %}
+
+</div>
     </div>
 </main>
 

@@ -5,12 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agendamento - Psiconnect</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: Arial, sans-serif;
       background: linear-gradient(135deg, #07f0d1, #077f8f);
@@ -21,7 +16,6 @@
       align-items: center;
       padding: 20px;
     }
-
     .container {
       background: rgba(0,0,0,0.35);
       padding: 40px;
@@ -31,103 +25,26 @@
       text-align: center;
       box-shadow: 0 8px 25px rgba(0,0,0,0.5);
     }
-
-    .logo {
-      font-size: 2.5rem;
-      font-weight: bold;
-      color: #ffffff;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-
-    .slogan {
-      font-size: 1rem;
-      margin-bottom: 30px;
-      font-style: italic;
-      color: #e0f7f5;
-    }
-
-    .perfil {
-      margin-bottom: 25px;
-    }
-
+    .logo { font-size: 2.5rem; font-weight: bold; margin-bottom: 10px; }
+    .slogan { margin-bottom: 30px; font-style: italic; }
     .perfil img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid #fff;
+      width: 120px; height: 120px; border-radius: 50%;
+      object-fit: cover; border: 3px solid #fff;
       margin-bottom: 10px;
     }
-
-    .perfil h2 {
-      font-size: 1.4rem;
-      font-weight: bold;
+    form { display: flex; flex-direction: column; gap: 15px; text-align: left; }
+    select, textarea {
+      width: 100%; padding: 12px; border-radius: 8px;
+      border: none; background: rgba(255,255,255,0.15);
+      color: #fff; font-size: 1rem;
     }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      text-align: left;
-    }
-
-    form p {
-      font-weight: bold;
-      font-size: 1.1rem;
-      margin-bottom: 10px;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: none;
-      font-size: 1rem;
-      background: rgba(255, 255, 255, 0.15);
-      color: #fff;
-    }
-
-    input::placeholder, textarea::placeholder {
-      color: #e0f7f5;
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-
+    option { color: #000; }
     button {
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      background: #ffffff;
-      color: #333;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
+      padding: 12px; border: none; border-radius: 8px;
+      background: #fff; color: #333; font-weight: bold;
+      cursor: pointer; transition: 0.3s;
     }
-
-    button:hover {
-      background: #e0f0f0;
-      transform: scale(1.05);
-    }
-
-    .cadastro {
-      margin-top: 25px;
-      text-align: center;
-    }
-
-    .cadastro a {
-      color: #ffffff;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .cadastro a:hover {
-      text-decoration: underline;
-    }
+    button:hover { background: #e0f0f0; transform: scale(1.05); }
   </style>
 </head>
 <body>
@@ -136,28 +53,36 @@
     <h1 class="logo">Psiconnect</h1>
     <p class="slogan">Agende sua consulta online</p>
 
-    <!-- Perfil do Psicólogo -->
     <div class="perfil">
       <img src="{{ psicologo.foto.url }}" alt="Foto do Psicólogo">
       <h2>{{ psicologo.nome }}</h2>
     </div>
 
-    <!-- Formulário -->
     <form method="POST">
       {% csrf_token %}
-      <input type="date" name="data" required>
-      <input type="time" name="hora" required>
+
+      <label>Selecione um horário disponível:</label>
+
+      <select name="horario_id" required>
+        <option value="">-- Escolha um horário --</option>
+
+        {% for h in horarios_disponiveis %}
+          <option value="{{ h.id }}">
+            {{ h.data }} - {{ h.hora }}
+          </option>
+        {% empty %}
+          <option disabled>Nenhum horário disponível</option>
+        {% endfor %}
+      </select>
+
       <textarea name="observacoes" placeholder="Observações (opcional)"></textarea>
+
       <button type="submit">Agendar</button>
     </form>
 
-    {% if mensagem %}
-      <p style="color: #fff; margin-top: 15px;">{{ mensagem }}</p>
-    {% endif %}
-
-    <div class="cadastro">
-      <a href="{% url 'inicio_paciente' %}">Voltar ao Início</a>
-    </div>
+    <a href="{% url 'inicio_paciente' %}" style="color:white; display:block; margin-top:20px;">
+      Voltar ao Início
+    </a>
 
   </div>
 </body>

@@ -98,6 +98,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 
+LOGIN_URL = '/auth/login_paciente/'
+LOGIN_REDIRECT_URL = '/auth/inicio_paciente/'
+LOGOUT_REDIRECT_URL = '/auth/login_paciente/'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

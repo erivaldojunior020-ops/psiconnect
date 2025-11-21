@@ -1,11 +1,13 @@
-from django.shortcuts import render, redirect
-from .models import PerfilPsicologo, Sessao  # certifique-se de importar
-from django.http import HttpResponse
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
+from datetime import datetime
+from datetime import date
+from django.contrib.auth.decorators import login_required
+from .models import PerfilPsicologo, Sessao, HorarioDisponivel, Mensagem
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as login_django
 from django.contrib import messages
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from .models import CustomUser
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -56,11 +58,17 @@ def login_paciente(request):
 
     return render(request, 'login_paciente.html')
 
+@login_required
 def inicio_paciente(request):
-    if request.user.is_authenticated:
-        return render(request, 'inicio_paciente.html')
-    messages.warning(request, 'Você precisa estar logado para acessar esta página.')
-    return redirect('login_paciente')
+    # Pega os 3 primeiros psicólogos cadastrados
+    destaques = PerfilPsicologo.objects.filter(
+        user__user_type='psicologo'
+    ).order_by('-id')[:3]
+
+    return render(request, 'inicio_paciente.html', {
+        "destaques": destaques
+    })
+
 
 def lista_psicologos(request):
     psicologos = PerfilPsicologo.objects.filter(user__user_type='psicologo')
@@ -71,21 +79,67 @@ def lista_psicologos(request):
 def agendamento_paciente(request, psicologo_id):
     psicologo = get_object_or_404(PerfilPsicologo, id=psicologo_id)
 
+    horarios = HorarioDisponivel.objects.filter(
+        psicologo=psicologo,
+        disponivel=True
+    ).order_by("data", "hora")
+
     if request.method == "POST":
-        data = request.POST.get("data")
-        hora = request.POST.get("hora")
+        horario_id = request.POST.get("horario_id")
+        horario = get_object_or_404(HorarioDisponivel, id=horario_id)
 
         Sessao.objects.create(
             paciente=request.user,
             psicologo=psicologo,
-            data=data,
-            hora=hora
+            data=horario.data,
+            hora=horario.hora,
         )
+
+        # Marcar o horário como ocupado
+        horario.disponivel = False
+        horario.save()
 
         messages.success(request, "Sessão agendada com sucesso!")
         return redirect("sessoes_paciente")
 
-    return render(request, "agendamento_paciente.html", {"psicologo": psicologo})
+    return render(request, "agendamento_paciente.html", {
+        "psicologo": psicologo,
+        "horarios_disponiveis": horarios
+    })
+
+
+@login_required(login_url="/auth/login_psicologo/")
+def cadastrar_horario(request):
+
+    if request.user.user_type != "psicologo":
+        messages.error(request, "Apenas psicólogos podem cadastrar horários.")
+        return redirect("login_psicologo")
+
+    psicologo, created = PerfilPsicologo.objects.get_or_create(user=request.user)
+
+    if request.method == "POST":
+        data = request.POST.get("data")
+        hora = request.POST.get("hora")
+
+        if HorarioDisponivel.objects.filter(psicologo=psicologo, data=data, hora=hora).exists():
+            messages.error(request, "Este horário já está cadastrado!")
+            return redirect("cadastrar_horario")
+
+        HorarioDisponivel.objects.create(
+            psicologo=psicologo,
+            data=data,
+            hora=hora,
+            disponivel=True
+        )
+
+        messages.success(request, "Horário cadastrado com sucesso!")
+        return redirect("cadastrar_horario")
+
+    horarios = HorarioDisponivel.objects.filter(psicologo=psicologo).order_by("data", "hora")
+
+    return render(request, "cadastrar_horario.html", {
+        "horarios": horarios
+    })
 
     
 @login_required
@@ -154,30 +208,37 @@ def cadastrar_aluno(request):
 
 
 
-# --- LOGIN PSICÓLOGO (ALUNO) ---
+# --- LOGIN PSICÓLOGO ---
 def login_psicologo(request):
     if request.method == "GET":
         return render(request, 'login_psicologo.html')
 
     email = request.POST.get('email')
     senha = request.POST.get('senha')
-    print("Tentando login:", email, senha)
 
     user = authenticate(request, email=email, password=senha)
-    print("Resultado do authenticate:", user)
 
     if user:
-        print("User type:", user.user_type)
         if user.user_type == 'psicologo':
+
+            # 🔥 Se o psicólogo NÃO tem perfil, cria automaticamente
+            from .models import PerfilPsicologo
+            PerfilPsicologo.objects.get_or_create(
+                user=user,
+                defaults={"nome_completo": user.username}
+            )
+
             login_django(request, user)
-            print("Login bem-sucedido!")
             return redirect('inicio_psicologo')
+
         else:
             messages.error(request, 'Apenas psicólogos podem acessar esta área.')
+
     else:
         messages.error(request, 'Email ou senha inválidos.')
 
     return render(request, 'login_psicologo.html')
+
 
 
 # --- INÍCIO PSICÓLOGO (ALUNO) ---
@@ -212,4 +273,90 @@ def perfil_psicologo(request):
     }
     return render(request, "perfil_psicologo.html", context)
 
+
+def consultas_psicologo(request):
+    if not request.user.is_authenticated or request.user.user_type != "psicologo":
+        return redirect("login_psicologo")
+
+    psicologo = request.user.perfil_psicologo
+
+    # Lista todas as sessões marcadas para esse psicólogo
+    consultas = Sessao.objects.filter(psicologo=psicologo).order_by("data", "hora")
+
+    # Se já passou da data → marca como pendente (se estiver confirmado)
+    for c in consultas:
+        if c.data < date.today() and c.status == "pendente":
+            c.save()
+
+
+
+    return render(request, "consultas_psicologo.html", {"consultas": consultas})
+
+def confirmar_consulta(request, id):
+    consulta = Sessao.objects.get(id=id)
+
+    if request.user.perfil_psicologo != consulta.psicologo:
+        return redirect("inicio_psicologo")
+
+    consulta.status = "confirmado"
+    consulta.save()
+    return redirect("consultas_psicologo")
+
+
+def cancelar_consulta(request, id):
+    consulta = Sessao.objects.get(id=id)
+
+    if request.user.perfil_psicologo != consulta.psicologo:
+        return redirect("inicio_psicologo")
+
+    consulta.status = "cancelado"
+    consulta.save()
+    return redirect("consultas_psicologo")
+
+
+def pendente_consulta(request, id):
+    consulta = Sessao.objects.get(id=id)
+
+    if request.user.perfil_psicologo != consulta.psicologo:
+        return redirect("inicio_psicologo")
+
+    consulta.status = "pendente"
+    consulta.save()
+    return redirect("consultas_psicologo")
+
+
+
+
+
+
+
+
+
+
+
+
+def chat(request, consulta_id):
+    consulta = get_object_or_404(Sessao, id=consulta_id)
+
+    # Apenas paciente e psicólogo da consulta podem acessar
+    if request.user not in [consulta.paciente, consulta.psicologo.user]:
+        return redirect("inicio_paciente")
+
+    mensagens = Mensagem.objects.filter(consulta=consulta).order_by("data_envio")
+
+    if request.method == "POST":
+        texto = request.POST.get("mensagem")
+        if texto.strip():
+            Mensagem.objects.create(
+                remetente=request.user,
+                destinatario=consulta.paciente if request.user == consulta.psicologo.user else consulta.psicologo.user,
+                consulta=consulta,
+                texto=texto,
+            )
+        return redirect("chat", consulta_id=consulta.id)
+
+    return render(request, "chat.html", {
+        "consulta": consulta,
+        "mensagens": mensagens
+    })
 

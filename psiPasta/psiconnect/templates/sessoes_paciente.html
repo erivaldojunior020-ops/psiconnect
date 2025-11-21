@@ -111,7 +111,6 @@
         margin: 4px 0;
         font-size: 1em;
     }
-
 </style>
 </head>
 <body>
@@ -128,29 +127,59 @@
     <h2>Minhas Sessões</h2>
 
     <div class="sessoes-container">
+
         {% if sessoes %}
             {% for s in sessoes %}
+                
                 <div class="card">
 
-                    <!-- Foto do Psicólogo -->
-                    <img src="{{ s.psicologo.foto.url }}" alt="Foto Psicólogo">
+    <!-- Foto -->
+    <img src="{{ s.psicologo.foto.url }}" alt="Foto Psicólogo">
 
-                    <div class="info">
-                        <h3>{{ s.psicologo.nome }}</h3>
-                        <p><strong>Data:</strong> {{ s.data|date:"d/m/Y" }}</p>
-                        <p><strong>Horário:</strong> {{ s.hora|time:"H:i" }}</p>
+    <div class="info">
+        <h3>{{ s.psicologo.nome }}</h3>
 
-                        {% if s.observacoes %}
-                            <p><strong>Observações:</strong> {{ s.observacoes }}</p>
-                        {% endif %}
-                    </div>
+        <p><strong>Data:</strong> {{ s.data|date:"d/m/Y" }}</p>
+        <p><strong>Horário:</strong> {{ s.hora|time:"H:i" }}</p>
 
-                </div>
+        <p>
+            <strong>Status:</strong>
+            {% if s.status == "confirmado" %}
+                <span style="color: #00ff80; font-weight: bold;">Confirmado</span>
+            {% elif s.status == "cancelado" %}
+                <span style="color: #ff4d4d; font-weight: bold;">Cancelado</span>
+            {% else %}
+                <span style="color: #fff8a6; font-weight: bold;">Pendente</span>
+            {% endif %}
+        </p>
+
+        {% if s.observacoes %}
+            <p><strong>Observações:</strong> {{ s.observacoes }}</p>
+        {% endif %}
+
+        <!-- Botão aparece somente se o psicólogo confirmar -->
+       {% if s.status == "confirmado" %}
+    <a href="{% url 'chat' s.id %}">
+        <button style="background: #0a8; padding: 10px 15px; border-radius: 6px; 
+                       color: white; border: none; cursor: pointer; margin-top: 10px;
+                       font-size: 1em; font-weight: bold;">
+            Ir para o chat com o psicólogo
+        </button>
+    </a>
+{% endif %}
+
+    </div>
+
+</div>
+
+
             {% endfor %}
         {% else %}
             <p>Nenhuma sessão agendada ainda.</p>
         {% endif %}
+
     </div>
+
 </main>
 
 </body>
