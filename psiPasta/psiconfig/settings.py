@@ -38,8 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'psiconnect'
+
+    # Seu app principal
+    'psiconnect',
+
+    # WebSockets
+    'channels',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -69,6 +75,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'psiconfig.wsgi.application'
+ASGI_APPLICATION = "psiconfig.asgi.application"
+
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
 
 
 # Database

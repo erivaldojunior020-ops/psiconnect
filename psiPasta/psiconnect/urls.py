@@ -9,23 +9,21 @@ urlpatterns = [
     path('lista_psicologos/', views.lista_psicologos, name='lista_psicologos'),
     path('agendamento_paciente/<int:psicologo_id>/', views.agendamento_paciente, name='agendamento_paciente'),
     path('sessoes_paciente/', views.sessoes_paciente, name='sessoes_paciente'),
-
+    path('sobre_paciente/', views.sobre_paciente, name='sobre_paciente'),
+    path('serviços_paciente/', views.serviços_paciente, name='serviços_paciente'),
+    path('suporte_paciente/', views.suporte_paciente, name='suporte_paciente'),
     
     path('login_professor/', views.login_professor, name='login_professor'),
     path('cadastrar_aluno/', views.cadastrar_aluno, name='cadastrar_aluno'),
 
 
     path("chat/<int:consulta_id>/", views.chat, name="chat"),
-    
-
-
 
     
     path('login_psicologo/', views.login_psicologo, name='login_psicologo'),
     path('inicio_psicologo/', views.inicio_psicologo, name='inicio_psicologo'),
     path('perfil_psicologo/', views.perfil_psicologo, name='perfil_psicologo'),
     path("cadastrar_horario/", views.cadastrar_horario, name="cadastrar_horario"),
-   
     path('consultas_psicologo/', views.consultas_psicologo, name='consultas_psicologo'),
     path("consulta/<int:id>/confirmar/", views.confirmar_consulta, name="confirmar_consulta"),
     path("consulta/<int:id>/cancelar/", views.cancelar_consulta, name="cancelar_consulta"),

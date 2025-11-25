@@ -6,109 +6,120 @@
 <title>Consultas do Psicólogo</title>
 
 <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #07f0d1, #077f8f);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+/* ===== BASE ===== */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-    header {
-      text-align: center;
-      padding: 20px 0;
-    }
+/* ===== HEADER ===== */
+header {
+  text-align: center;
+  padding: 20px 0;
+}
 
-    header h1 {
-      margin: 0;
-      font-size: 2.8em;
-      color: #fff;
-    }
+header h1 {
+  margin: 0;
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: #f4c20d;
+  letter-spacing: 2px;
+}
 
-    .menu {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-      margin-top: 15px;
-      flex-wrap: wrap;
-    }
+/* ===== MENU ===== */
+.menu {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
 
-    .menu button {
-      background-color: rgba(255, 255, 255, 0.2);
-      border: none;
-      padding: 10px 20px;
-      border-radius: 10px;
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+.menu button {
+  background-color: #1b2366;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.25s;
+}
 
-    .menu button:hover {
-      background-color: rgba(255, 255, 255, 0.4);
-      transform: scale(1.05);
-    }
+.menu button:hover {
+  background: #2e3aa8;
+  transform: scale(1.05);
+}
 
-    main {
-      flex: 1;
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 25px;
-    }
+/* ===== MAIN ===== */
+main {
+  flex: 1;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
 
-    .consultas {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 25px;
-    }
+/* ===== CONSULTAS ===== */
+.consultas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+}
 
-    .card {
-      background: rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 25px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.25);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
+/* ===== CARD ===== */
+.card {
+  background: #1b2366;
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.45);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
 
-    .card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 12px 25px rgba(0,0,0,0.35);
-    }
+.card:hover {
+  transform: scale(1.06);
+  box-shadow: 0 18px 45px rgba(0,0,0,0.55);
+}
 
-    .status {
-      font-weight: bold;
-      padding: 4px 10px;
-      border-radius: 8px;
-      display: inline-block;
-      font-size: 0.9em;
-    }
+/* ===== STATUS ===== */
+.status {
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 10px;
+  display: inline-block;
+  font-size: 0.9em;
+}
 
-    .pendente { background-color: #f5c518; color: #000; }
-    .confirmado { background-color: #4caf50; color: #fff; }
-    .cancelado { background-color: #f44336; color: #fff; }
+.pendente { background-color: #f4c20d; color: #1b2366; }
+.confirmado { background-color: #4caf50; color: #fff; }
+.cancelado { background-color: #f44336; color: #fff; }
 
-    .acoes a {
-      display: inline-block;
-      margin-right: 10px;
-      padding: 6px 12px;
-      background: rgba(255,255,255,0.3);
-      color: #fff;
-      text-decoration: none;
-      border-radius: 8px;
-      font-size: 0.9em;
-      transition: 0.2s;
-    }
+/* ===== AÇÕES ===== */
+.acoes a {
+  display: inline-block;
+  margin-right: 10px;
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 10px;
+  font-size: 0.9em;
+  transition: 0.25s;
+}
 
-    .acoes a:hover {
-      background: rgba(255,255,255,0.6);
-      transform: scale(1.05);
-    }
+.acoes a:hover {
+  background: #f4c20d;
+  color: #1b2366;
+  transform: scale(1.08);
+}
 </style>
 </head>
 
@@ -116,10 +127,14 @@
 
 <header>
   <h1>Consultas</h1>
-  <div class="menu">
 
+  <div class="menu">
     <a href="{% url 'inicio_psicologo' %}">
-      <button>Dashboard</button>
+      <button>Início</button>
+    </a>
+
+    <a href="{% url 'cadastrar_horario' %}">
+      <button>Cadastrar Horário</button>
     </a>
 
     <a href="{% url 'consultas_psicologo' %}">
@@ -130,10 +145,9 @@
       <button>Perfil</button>
     </a>
 
-    <a href="{% url 'login_psicologo' %}">
-      <button>Sair</button>
-    </a>
-
+    <form action="{% url 'login_psicologo' %}" method="post">
+      {% csrf_token %}
+    </form>
   </div>
 </header>
 
@@ -163,8 +177,9 @@
       {% endif %}
 
       <div class="acoes">
+
         {% if consulta.status == "confirmado" %}
-          <a href="{% url 'chat' consulta.id %}">💬 Ir para o Chat</a>
+          <a href="{% url 'chat' consulta.id %}">💬 Chat</a>
         {% endif %}
 
         {% if consulta.status != 'confirmado' %}

@@ -5,46 +5,111 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agendamento - Psiconnect</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #07f0d1, #077f8f);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-    .container {
-      background: rgba(0,0,0,0.35);
-      padding: 40px;
-      border-radius: 15px;
-      width: 400px;
-      max-width: 100%;
-      text-align: center;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-    }
-    .logo { font-size: 2.5rem; font-weight: bold; margin-bottom: 10px; }
-    .slogan { margin-bottom: 30px; font-style: italic; }
-    .perfil img {
-      width: 120px; height: 120px; border-radius: 50%;
-      object-fit: cover; border: 3px solid #fff;
-      margin-bottom: 10px;
-    }
-    form { display: flex; flex-direction: column; gap: 15px; text-align: left; }
-    select, textarea {
-      width: 100%; padding: 12px; border-radius: 8px;
-      border: none; background: rgba(255,255,255,0.15);
-      color: #fff; font-size: 1rem;
-    }
-    option { color: #000; }
-    button {
-      padding: 12px; border: none; border-radius: 8px;
-      background: #fff; color: #333; font-weight: bold;
-      cursor: pointer; transition: 0.3s;
-    }
-    button:hover { background: #e0f0f0; transform: scale(1.05); }
+   * { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Poppins", Arial, sans-serif;
+  background: linear-gradient(135deg, #6a00ff, #007bff);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+}
+
+/* ===== CONTAINER GLASS ===== */
+.container {
+  background: rgba(15, 18, 70, 0.65);
+  backdrop-filter: blur(8px);
+  padding: 45px;
+  border-radius: 22px;
+  width: 420px;
+  max-width: 100%;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+}
+
+/* ===== TÍTULO E SLOGAN ===== */
+.logo {
+  font-size: 2.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  color: #ffcf00;
+}
+
+.slogan {
+  font-style: italic;
+  font-size: 1rem;
+  color: #e8e8e8;
+  margin-bottom: 28px;
+}
+
+/* ===== FOTO DE PERFIL ===== */
+.perfil img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ffcf00;
+  margin-bottom: 15px;
+}
+
+/* ===== FORMULÁRIO ===== */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  text-align: left;
+}
+
+select, textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  font-size: 1rem;
+  transition: 0.25s;
+}
+
+select:focus, textarea:focus {
+  outline: 2px solid #ffcf00;
+  background: rgba(255,255,255,0.18);
+}
+
+option { color: #000; }
+
+/* ===== BOTÃO ===== */
+button {
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #ffcf00;
+  color: #1b1b1b;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+button:hover {
+  background: #ffd836;
+  transform: translateY(-3px) scale(1.05);
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 430px) {
+  .container {
+    padding: 32px;
+  }
+  .logo {
+    font-size: 2.2rem;
+  }
+}
+
   </style>
 </head>
 <body>

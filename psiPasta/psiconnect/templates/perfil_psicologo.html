@@ -4,126 +4,158 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Psiconnect - Perfil do Psicólogo</title>
+
+  {% if not request.user.is_authenticated %}
+    <script>
+      window.location.href = "{% url 'login_psicologo' %}";
+    </script>
+  {% endif %}
+
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #07f0d1, #077f8f);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+    /* ===== BASE ===== */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-    header {
-      text-align: center;
-      padding: 20px 0;
-    }
+/* ===== HEADER ===== */
+header {
+  text-align: center;
+  padding: 20px 0;
+}
 
-    header h1 {
-      margin: 0;
-      font-size: 2.8em;
-      color: #fff;
-    }
+header h1 {
+  margin: 0;
+  font-size: 2.8em;
+  color: #f4c20d;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
 
-    .menu {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-      margin-top: 15px;
-      flex-wrap: wrap;
-    }
+/* ===== MENU ===== */
+.menu {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
 
-    .menu button {
-      background-color: rgba(255, 255, 255, 0.2);
-      border: none;
-      padding: 10px 20px;
-      border-radius: 10px;
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+.menu button {
+  background-color: rgba(255, 255, 255, 0.12);
+  border: none;
+  padding: 10px 22px;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.25s;
+}
 
-    .menu button:hover {
-      background-color: rgba(255, 255, 255, 0.4);
-      transform: scale(1.05);
-    }
+.menu button:hover {
+  background-color: rgba(255, 255, 255, 0.28);
+  transform: scale(1.06);
+}
 
-    main {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 30px 20px;
-    }
+/* ===== MAIN ===== */
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 20px;
+}
 
-    .edit-card {
-      background: rgba(255,255,255,0.1);
-      padding: 30px;
-      border-radius: 20px;
-      width: 100%;
-      max-width: 500px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
+/* ===== CARD ===== */
+.edit-card {
+  background: #1b2366;
+  padding: 40px 35px;
+  border-radius: 22px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
 
-    .edit-card h2 {
-      text-align: center;
-      margin: 0;
-      font-size: 2em;
-    }
+/* ===== TITULO ===== */
+.edit-card h2 {
+  text-align: center;
+  margin: 0;
+  font-size: 2.1em;
+  font-weight: 800;
+  color: #f4c20d;
+}
 
-    .edit-card label {
-      font-weight: bold;
-      margin-bottom: 5px;
-      display: block;
-    }
+/* ===== LABELS ===== */
+.edit-card label {
+  font-weight: bold;
+  margin-bottom: 6px;
+  display: block;
+  font-size: 0.95em;
+}
 
-    .edit-card input[type="text"],
-    .edit-card input[type="email"],
-    .edit-card input[type="tel"],
-    .edit-card input[type="file"] {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-      font-size: 1em;
-    }
+/* ===== INPUTS ===== */
+.edit-card input[type="text"],
+.edit-card input[type="email"],
+.edit-card input[type="tel"] {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-size: 1em;
+  background: #fff;
+  color: #333;
+}
 
-    .edit-card input[type="file"] {
-      background-color: rgba(255,255,255,0.2);
-      color: #fff;
-      cursor: pointer;
-    }
+.edit-card input::placeholder {
+  color: #6b6b6b;
+}
 
-    .edit-card button {
-      padding: 12px 20px;
-      border: none;
-      border-radius: 10px;
-      background-color: rgba(255,255,255,0.2);
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.2s;
-      margin-top: 10px;
-    }
+/* ===== FILE INPUT ===== */
+.edit-card input[type="file"] {
+  background-color: rgba(255,255,255,0.15);
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
 
-    .edit-card button:hover {
-      background-color: rgba(255,255,255,0.4);
-      transform: scale(1.05);
-    }
+/* ===== BUTTON ===== */
+.edit-card button {
+  padding: 14px 20px;
+  border: none;
+  border-radius: 12px;
+  background-color: #f4c20d;
+  color: #1b2366;
+  font-weight: bold;
+  font-size: 1.05em;
+  cursor: pointer;
+  transition: 0.25s;
+  margin-top: 8px;
+}
 
-    .preview-img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 10px;
-      border: 2px solid #fff;
-    }
+.edit-card button:hover {
+  background-color: #ffdb4d;
+  transform: scale(1.06);
+}
+
+/* ===== FOTO PRÉ-VISUALIZAÇÃO ===== */
+.preview-img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border: 3px solid #f4c20d;
+}
   </style>
 </head>
 <body>
@@ -131,8 +163,11 @@
 <header>
   <h1>Psiconnect</h1>
   <div class="menu">
+    <a href="{% url 'inicio_psicologo' %}"><button>Início</button></a>
+    <a href="{% url 'cadastrar_horario' %}"><button>Cadastrar Horário</button></a>
+    <a href="{% url 'consultas_psicologo' %}"><button>Consultas</button></a>
     <a href="{% url 'perfil_psicologo' %}"><button>Perfil</button></a>
-    <a href="{% url 'inicio_psicologo' %}"><button>Sair</button></a>
+
   </div>
 </header>
 
@@ -169,7 +204,6 @@
 </main>
 
 <script>
-  // Preview da foto
   const fotoInput = document.getElementById('foto');
   const preview = document.getElementById('preview');
 

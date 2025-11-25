@@ -6,89 +6,111 @@
   <title>Login Professor - Psiconnect</title>
   <style>
     * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #07f0d1, #077f8f);
-      color: #fff;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+body {
+  font-family: "Poppins", Arial, sans-serif;
+  background: linear-gradient(135deg, #07f0d1, #077f8f);
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    .container {
-      background: rgba(0, 0, 0, 0.4);
-      padding: 40px;
-      border-radius: 15px;
-      width: 400px;
-      text-align: center;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    }
+/* CARD GLASSMORPHISM */
+.container {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 45px;
+  border-radius: 25px;
+  width: 420px;
+  text-align: center;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
 
-    .logo {
-      font-size: 2.3rem;
-      font-weight: bold;
-      color: #ffffff;
-      margin-bottom: 5px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
+/* TÍTULO */
+.logo {
+  font-size: 2.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
 
-    .slogan {
-      font-size: 1rem;
-      margin-bottom: 25px;
-      font-style: italic;
-      color: #ddd;
-    }
+/* SUBTÍTULO */
+.slogan {
+  font-size: 1rem;
+  color: #e8f9ff;
+  opacity: 0.9;
+  margin-bottom: 28px;
+  font-style: italic;
+}
 
-    p {
-      margin-bottom: 20px;
-      font-size: 1rem;
-    }
+/* FORM */
+.form-login {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
 
-    .form-login {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
+input {
+  padding: 14px 16px;
+  border: none;
+  border-radius: 14px;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.35);
+  color: #000;
+}
 
-    input {
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-    }
+input::placeholder {
+  color: rgba(0, 0, 0, 0.6);
+}
 
-    button {
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      background: #ffffff;
-      color: #333;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+/* BOTÃO PRINCIPAL */
+button {
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #333;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.25s;
+}
 
-    button:hover {
-      transform: scale(1.05);
-    }
+button:hover {
+  transform: scale(1.04);
+}
 
-    .error {
-      color: #ff8080;
-      margin-bottom: 10px;
-      font-size: 0.9rem;
-    }
+/* ERROS */
+.error {
+  color: #ff6f6f;
+  font-size: 0.9rem;
+  margin-top: -5px;
+}
 
-    input:focus {
-      outline: 2px solid #07f0d1;
-      background: rgba(255, 255, 255, 0.1);
-    }
+/* INPUT ACTIVE */
+input:focus {
+  outline: 2px solid #07f0d1;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .container {
+    width: 90%;
+    padding: 35px;
+  }
+  .logo {
+    font-size: 2.1rem;
+  }
+}
+
   </style>
 </head>
 <body>

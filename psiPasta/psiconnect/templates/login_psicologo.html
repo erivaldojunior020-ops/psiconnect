@@ -5,37 +5,116 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Psiconnect - Login Aluno</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #07f0d1, #077f8f);
-      color: #fff;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .container {
-      background: rgba(0,0,0,0.4);
-      padding: 40px;
-      border-radius: 15px;
-      width: 400px;
-      text-align: center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-    }
-    .logo { font-size: 2.3rem; font-weight: bold; color: #fff; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 2px; }
-    .slogan { font-size: 1rem; margin-bottom: 25px; font-style: italic; color: #ddd; }
-    p { margin-bottom: 20px; font-size: 1rem; }
-    .form-login { display: flex; flex-direction: column; gap: 15px; }
-    input { padding: 12px; border: none; border-radius: 8px; font-size: 1rem; }
-    button {
-      padding: 12px; border: none; border-radius: 8px;
-      background: #ffffff; color: #333; font-weight: bold;
-      cursor: pointer; transition: 0.3s;
-    }
-    button:hover { background: #ffffff; transform: scale(1.05); }
-    input:focus { outline: 2px solid #07f0d1; background: rgba(255,255,255,0.1); }
-    .error { background: rgba(255, 0, 0, 0.3); padding: 10px; border-radius: 5px; margin-bottom: 15px; }
+   * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #6a00ff, #007bff);
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* CARD / CONTAINER */
+.container {
+  background: rgba(15, 18, 70, 0.9);
+  padding: 45px 50px;
+  border-radius: 20px;
+  width: 420px;
+  text-align: center;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+}
+
+/* LOGO / TÍTULO */
+.logo {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #ffcf00;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.slogan {
+  font-size: 0.95rem;
+  margin-bottom: 30px;
+  font-style: italic;
+  color: #e6e6e6;
+}
+
+/* FORM */
+.form-login {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* INPUTS */
+input {
+  padding: 13px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fff;
+  color: #333;
+}
+
+input::placeholder {
+  color: #7c7c7c;
+}
+
+input:focus {
+  outline: 2px solid #ffcf00;
+}
+
+/* BOTÃO PRINCIPAL */
+button {
+  padding: 13px;
+  border: none;
+  border-radius: 8px;
+  background: #ffcf00;
+  color: #2d2d2d;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 207, 0, 0.6);
+}
+
+/* ERRO */
+.error {
+  background: rgba(255, 0, 0, 0.35);
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+/* LINK DE ENTRAR */
+.login-link {
+  margin-top: 18px;
+  font-size: 0.95rem;
+}
+
+.login-link a {
+  color: #ffcf00;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
   </style>
 </head>
 <body>

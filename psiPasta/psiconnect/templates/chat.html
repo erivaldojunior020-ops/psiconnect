@@ -6,144 +6,197 @@
   <title>Psiconnect - Chat</title>
 
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #07f0d1, #077f8f);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+/* ===== BODY ===== */
+body {
+  margin: 0;
+  font-family: 'Poppins', Arial, sans-serif;
+  background: linear-gradient(135deg, #6a00ff, #007bff);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-    header {
-      text-align: center;
-      padding: 20px 0;
-    }
+/* ===== HEADER ===== */
+header {
+  text-align: center;
+  padding: 25px 0;
+}
 
-    header h1 {
-      margin: 0;
-      font-size: 2.3em;
-      color: #fff;
-    }
+header h1 {
+  font-size: 2.4em;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
 
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      width: 100%;
-    }
+/* ===== MAIN ===== */
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 25px;
+  width: 100%;
+}
 
-    .chat-container {
-      background: rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 20px;
-      max-width: 600px;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      height: 500px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
+/* ===== CHAT BOX ===== */
+.chat-container {
+  background: rgba(25, 30, 75, 0.45);
+  backdrop-filter: blur(12px);
+  border-radius: 22px;
+  padding: 22px;
+  max-width: 640px;
+  width: 100%;
+  height: 520px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255,255,255,0.12);
+  animation: fadeIn 0.6s ease-in-out;
+}
 
-    .messages {
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      padding-right: 10px;
-    }
+/* ===== MESSAGES AREA ===== */
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-right: 10px;
+}
 
-    .message {
-      padding: 10px 15px;
-      border-radius: 20px;
-      max-width: 75%;
-      word-wrap: break-word;
-      display: flex;
-      flex-direction: column;
-    }
+/* ===== MESSAGE BUBBLES ===== */
+.message {
+  padding: 12px 18px;
+  border-radius: 18px;
+  max-width: 78%;
+  font-size: 1rem;
+  word-wrap: break-word;
+  animation: pop 0.25s ease;
+}
 
-    .sent {
-      background-color: rgba(255,255,255,0.3);
-      align-self: flex-end;
-    }
+/* Sent by user */
+.sent {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #8d5eff, #6a00ff);
+}
 
-    .received {
-      background-color: rgba(255,255,255,0.5);
-      color: #000;
-      align-self: flex-start;
-    }
+/* Received */
+.received {
+  align-self: flex-start;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.25);
+}
 
-    .time {
-      font-size: 0.75em;
-      margin-top: 5px;
-      opacity: 0.7;
-      text-align: right;
-    }
+/* Timestamp */
+.time {
+  font-size: 0.75em;
+  opacity: 0.75;
+  margin-top: 6px;
+  text-align: right;
+}
 
-    .input-area {
-      display: flex;
-      gap: 10px;
-      margin-top: 15px;
-    }
+/* ===== INPUT AREA ===== */
+.input-area {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+}
 
-    .input-area input {
-      flex: 1;
-      padding: 10px 15px;
-      border-radius: 20px;
-      border: none;
-      font-size: 1em;
-    }
+.input-area input {
+  flex: 1;
+  padding: 12px 15px;
+  border-radius: 14px;
+  border: none;
+  font-size: 1rem;
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+  outline: none;
+}
 
-    .input-area button {
-      padding: 10px 20px;
-      border-radius: 20px;
-      border: none;
-      background-color: rgba(255,255,255,0.2);
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .input-area button:hover {
-      background-color: rgba(255,255,255,0.4);
-      transform: scale(1.05);
-    }
+.input-area button {
+  padding: 12px 22px;
+  border-radius: 14px;
+  border: none;
+  background: #ffcf00;
+  color: #333;
+  font-weight: 700;
+  cursor: pointer;
+}
   </style>
 </head>
 
 <body>
 
-<header>
-  <h1>Psiconnect - Chat da Consulta</h1>
-</header>
+<header><h1>Psiconnect - Chat da Consulta</h1></header>
 
 <main>
   <div class="chat-container">
 
     <div class="messages" id="messages">
-      
       {% for m in mensagens %}
         <div class="message {% if m.remetente == user %}sent{% else %}received{% endif %}">
             {{ m.texto }}
             <div class="time">{{ m.data_envio|date:"H:i" }}</div>
         </div>
       {% endfor %}
-
     </div>
 
-    <form method="POST" class="input-area">
-      {% csrf_token %}
-      <input type="text" name="mensagem" placeholder="Digite sua mensagem..." required>
-      <button type="submit">Enviar</button>
-    </form>
+    <div class="input-area">
+      <input type="text" id="msgInput" placeholder="Digite sua mensagem...">
+      <button onclick="sendMessage()">Enviar</button>
+    </div>
 
   </div>
 </main>
+
+<script>
+    const consultaId = "{{ consulta.id }}";
+    const userId = "{{ user.id }}";       // AGORA ENVIAMOS O ID!!
+    const userName = "{{ user.username }}";
+
+    const wsUrl = `ws://${location.hostname}:${location.port}/ws/chat/${consultaId}/`;
+    console.log("WS URL:", wsUrl);
+    const chatSocket = new WebSocket(wsUrl);
+
+    // Recebendo mensagens do servidor
+    chatSocket.onmessage = e => {
+        const data = JSON.parse(e.data);
+        addMessage(data.texto, data.remetente, data.hora);
+    };
+
+    // Enviar mensagem
+    function sendMessage() {
+        const input = document.getElementById("msgInput");
+        const msg = input.value.trim();
+
+        if (!msg) return;
+
+        chatSocket.send(JSON.stringify({
+            texto: msg,
+            hora: new Date().toLocaleTimeString().slice(0,5),
+            remetente: userId   // AGORA O BACKEND ACEITA
+        }));
+
+        input.value = "";
+    }
+
+    // Exibir mensagem na tela
+    function addMessage(texto, remetente, hora) {
+        const box = document.getElementById("messages");
+
+        const div = document.createElement("div");
+        div.classList.add("message");
+
+        // Se o nome do remetente vindo do backend for o mesmo do usuário atual
+        div.classList.add(remetente === userName ? "sent" : "received");
+
+        div.innerHTML = `${texto}<div class="time">${hora}</div>`;
+
+        box.appendChild(div);
+        box.scrollTop = box.scrollHeight;
+    }
+</script>
+
 
 </body>
 </html>

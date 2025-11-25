@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sobre - Psiconnect</title>
+
+<style>
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", Arial, sans-serif;
+    background: linear-gradient(135deg, #6a00ff, #007bff);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ===== HEADER ===== */
+header {
+    width: 100%;
+    text-align: center;
+    padding: 25px 10px;
+    background: rgba(15, 18, 70, 0.7);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
+}
+
+header h1 {
+    font-size: 2.6em;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #ffcf00;
+    text-transform: uppercase;
+}
+
+/* ===== MENU ===== */
+.menu {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+}
+
+.menu a {
+    background: rgba(255, 255, 255, 0.18);
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.menu a:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: scale(1.06);
+}
+
+/* ===== MAIN ===== */
+main {
+    width: 100%;
+    max-width: 900px;
+    padding: 40px 25px;
+}
+
+section {
+    background: rgba(15, 18, 70, 0.6);
+    padding: 25px;
+    border-radius: 18px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+h2 {
+    font-size: 1.9em;
+    color: #ffcf00;
+    margin-bottom: 12px;
+}
+
+p {
+    font-size: 1.15em;
+    line-height: 1.6;
+    color: #e7e7e7;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2.1em;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Psiconnect</h1>
+    <div class="menu">
+        <a href="{% url 'inicio_paciente' %}">Início</a>
+        <a href="{% url 'sobre_paciente' %}">Sobre</a>
+        <a href="{% url 'serviços_paciente' %}">Serviços</a>
+        <a href="{% url 'suporte_paciente' %}">Suporte</a>
+        <a href="{% url 'sessoes_paciente' %}">Sessões</a>
+    </div>
+</header>
+
+<main>
+
+    <section>
+        <h2>Sobre o Psiconnect</h2>
+        <p>O Psiconnect é um projeto acadêmico voltado para alunos do oitavo e nono período de Psicologia, com supervisão de professores, permitindo que os estudantes realizem atendimentos de estágio de forma organizada e segura.</p>
+    </section>
+
+    <section>
+        <h2>Nosso Objetivo</h2>
+        <p>Oferecer atendimento psicológico de qualidade para quem busca apoio emocional, utilizando a supervisão de profissionais experientes e garantindo que os alunos possam aplicar seus conhecimentos em situações reais de forma segura.</p>
+    </section>
+
+    <section>
+        <h2>Como Funciona</h2>
+        <p>Os alunos cadastrados realizam o atendimento dos clientes, que podem agendar consultas pelo site. Cada sessão é acompanhada por supervisores, garantindo que o aprendizado seja eficaz e que o atendimento seja de excelência.</p>
+    </section>
+
+    <section>
+        <h2>Equipe</h2>
+        <p>Nosso time é formado por alunos do quarto período de ADS, orientados por professores qualificados, garantindo que cada atendimento seja supervisionado e que a experiência seja enriquecedora tanto para alunos quanto para clientes.</p>
+    </section>
+
+</main>
+
+</body>
+</html>

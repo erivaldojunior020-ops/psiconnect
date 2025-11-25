@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psiconnect - Suporte</title>
+
+<style>
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", Arial, sans-serif;
+    background: linear-gradient(135deg, #6a00ff, #007bff);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* ===== HEADER ===== */
+header {
+    width: 100%;
+    text-align: center;
+    padding: 25px 10px;
+    background: rgba(15, 18, 70, 0.7);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
+}
+
+header h1 {
+    font-size: 2.6em;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #ffcf00;
+    text-transform: uppercase;
+}
+
+/* ===== MENU ===== */
+.menu {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+}
+
+.menu a,
+.menu button {
+    background: rgba(255, 255, 255, 0.18);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.menu a:hover,
+.menu button:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: scale(1.06);
+}
+
+/* ===== MAIN ===== */
+main {
+    flex: 1;
+    width: 100%;
+    max-width: 700px;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* ===== SUPORTE CARD ===== */
+.suporte-card {
+    width: 100%;
+    background: rgba(15, 18, 70, 0.85);
+    border-radius: 22px;
+    padding: 35px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+}
+
+.suporte-card h2 {
+    font-size: 2em;
+    color: #ffcf00;
+    margin-bottom: 15px;
+}
+
+.suporte-card p {
+    color: #e7e7e7;
+    font-size: 1.15em;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    border-radius: 15px;
+    border: none;
+    padding: 15px;
+    font-size: 1em;
+    resize: none;
+    outline: none;
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+}
+
+textarea::placeholder {
+    color: #eeeeee;
+}
+
+.btn-enviar {
+    margin-top: 20px;
+    padding: 14px 35px;
+    border: none;
+    border-radius: 12px;
+    background: #ffcf00;
+    color: #1d1d1d;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+.btn-enviar:hover {
+    transform: scale(1.07);
+    box-shadow: 0 0 18px rgba(255, 207, 0, 0.8);
+}
+
+/* ===== MENSAGEM ===== */
+.mensagem-sucesso {
+    margin-top: 15px;
+    font-size: 1.1em;
+    color: #ffcf00;
+    display: none;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 600px) {
+    .suporte-card {
+        padding: 25px;
+    }
+}
+</style>
+
+</head>
+<body>
+
+<header>
+    <h1>Psiconnect</h1>
+    <div class="menu">
+        <a href="{% url 'inicio_paciente' %}">Início</a>
+        <a href="{% url 'sobre_paciente' %}">Sobre</a>
+        <a href="{% url 'serviços_paciente' %}">Serviços</a>
+        <a href="{% url 'suporte_paciente' %}">Suporte</a>
+        <a href="{% url 'sessoes_paciente' %}">Sessões</a>
+    </div>
+</header>
+
+<main>
+    <div class="suporte-card">
+        <h2>Suporte</h2>
+        <p>Precisa de ajuda? Envie sua dúvida ou problema e nossa equipe irá retornar o mais rápido possível.</p>
+
+        <textarea id="mensagem" placeholder="Digite aqui sua mensagem..."></textarea>
+
+        <button class="btn-enviar" id="btnEnviar">Enviar</button>
+
+        <div class="mensagem-sucesso" id="msgSucesso">
+            Sua mensagem foi enviada com sucesso!
+        </div>
+    </div>
+</main>
+
+<script>
+const btn = document.getElementById("btnEnviar");
+const textarea = document.getElementById("mensagem");
+const msg = document.getElementById("msgSucesso");
+
+btn.addEventListener("click", () => {
+    if (textarea.value.trim() === "") {
+        alert("Por favor, escreva sua mensagem antes de enviar.");
+        return;
+    }
+
+    msg.style.display = "block";
+    textarea.value = "";
+
+    setTimeout(() => msg.style.display = "none", 4000);
+});
+</script>
+
+</body>
+</html>

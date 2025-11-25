@@ -1,85 +1,182 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastrar Horários - Psiconnect</title>
-  <style>
-    body {
-      font-family: Arial;
-      background: linear-gradient(135deg, #07f0d1, #077f8f);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-      color: #fff;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadastrar Horários - Psiconnect</title>
 
-    .container {
-      background: rgba(0, 0, 0, 0.35);
-      padding: 35px;
-      border-radius: 15px;
-      width: 420px;
-      text-align: center;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-    }
+<style>
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    h1 {
-      margin-bottom: 20px;
-      font-size: 2rem;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
+/* ===== BACKGROUND GERAL ===== */
+body {
+  font-family: "Poppins", Arial, sans-serif;
+  background: linear-gradient(135deg, #6a00ff, #2575fc);
+  min-height: 100vh;
+  color: #fff;
+}
 
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-bottom: 20px;
-    }
+/* ===== HEADER ===== */
+header {
+  width: 100%;
+  padding: 22px 0;
+  text-align: center;
+  background: rgba(15, 18, 70, 0.65);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
+}
 
-    input {
-      padding: 12px;
-      border-radius: 8px;
-      border: none;
-      background: rgba(255,255,255,0.15);
-      color: #fff;
-      font-size: 1rem;
-    }
+header h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #ffcf00;
+  margin-bottom: 12px;
+}
 
-    button {
-      padding: 12px;
-      border-radius: 8px;
-      border: none;
-      background: #fff;
-      color: #333;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.25s;
-    }
+/* ===== MENU ===== */
+.menu {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 
-    button:hover {
-      background: #e6e6e6;
-      transform: scale(1.05);
-    }
+.menu a button,
+.menu form button {
+  background: rgba(255, 255, 255, 0.18);
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-    .lista-horarios {
-      margin-top: 25px;
-      text-align: left;
-    }
+.menu a button:hover,
+.menu form button:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(1.08);
+}
 
-    .horario-item {
-      background: rgba(255,255,255,0.15);
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 8px;
-      font-size: 0.95rem;
-    }
+/* ===== CONTAINER ===== */
+.container {
+  margin: 60px auto;
+  width: 95%;
+  max-width: 450px;
+  background: rgba(15, 18, 70, 0.88);
+  padding: 45px 40px;
+  border-radius: 22px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
 
-  </style>
+/* ===== TÍTULO DO CARD ===== */
+.container h1 {
+  font-size: 2.1rem;
+  margin-bottom: 25px;
+  color: #ffcf00;
+  font-weight: 700;
+}
+
+/* ===== FORM ===== */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input {
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  font-size: 1rem;
+  outline: none;
+  background: rgba(255,255,255,0.9);
+  color: #000;
+}
+
+button[type="submit"] {
+  padding: 14px;
+  margin-top: 10px;
+  border-radius: 12px;
+  border: none;
+  background: #ffcf00;
+  color: #1b1b1b;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+button[type="submit"]:hover {
+  background: #ffe066;
+  transform: scale(1.06);
+}
+
+/* ===== LISTA DE HORÁRIOS ===== */
+.lista-horarios {
+  margin-top: 25px;
+  text-align: left;
+}
+
+.horario-item {
+  background: rgba(255, 255, 255, 0.12);
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  color: #fff;
+}
+
+/* ===== LINK VOLTAR ===== */
+.voltar {
+  display: block;
+  margin-top: 25px;
+  color: #ffcf00;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.voltar:hover {
+  text-decoration: underline;
+}
+
+</style>
 </head>
 <body>
+
+<header>
+  <h1>Psiconnect</h1>
+
+  <div class="menu">
+    <a href="{% url 'inicio_psicologo' %}">
+      <button>Início</button>
+    </a>
+
+    <a href="{% url 'cadastrar_horario' %}">
+      <button>Cadastrar horário</button>
+    </a>
+
+    <a href="{% url 'consultas_psicologo' %}">
+      <button>Consultas</button>
+    </a>
+
+    <a href="{% url 'perfil_psicologo' %}">
+      <button>Perfil</button>
+    </a>
+
+    <form method="post" action="{% url 'login_psicologo' %}">
+      {% csrf_token %}
+    </form>
+  </div>
+</header>
+
 
 <div class="container">
 
@@ -92,11 +189,12 @@
     <button type="submit">Adicionar Horário</button>
   </form>
 
-  <h3>Horários cadastrados</h3>
+  <h3 style="margin-top:25px">Horários Cadastrados</h3>
+
   <div class="lista-horarios">
     {% for h in horarios %}
       <div class="horario-item">
-        {{ h.data }} - {{ h.hora }}  
+        {{ h.data }} — {{ h.hora }}
         {% if h.disponivel %}
           (Disponível)
         {% else %}
@@ -108,8 +206,7 @@
     {% endfor %}
   </div>
 
-  <br>
-  <a href="{% url 'inicio_psicologo' %}" style="color:white;">Voltar</a>
+  <a href="{% url 'inicio_psicologo' %}" class="voltar">← Voltar</a>
 
 </div>
 

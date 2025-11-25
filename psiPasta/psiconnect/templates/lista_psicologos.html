@@ -5,115 +5,138 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Escolher Psicólogo - Psiconnect</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+   * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #07f0d1, #077f8f);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
+body {
+  font-family: "Poppins", Arial, sans-serif;
+  background: linear-gradient(135deg, #6a00ff, #007bff);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+}
 
-    .container {
-      background: rgba(0,0,0,0.4);
-      padding: 40px;
-      border-radius: 15px;
-      width: 400px;
-      max-width: 100%;
-      text-align: center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-    }
+/* ===== CONTAINER GLASS ===== */
+.container {
+  background: rgba(20, 25, 80, 0.55);
+  backdrop-filter: blur(9px);
+  padding: 45px;
+  border-radius: 22px;
+  width: 420px;
+  max-width: 100%;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+}
 
-    .logo {
-      font-size: 2.3rem;
-      font-weight: bold;
-      color: #ffffff;
-      margin-bottom: 5px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
+/* ===== TÍTULO E SLOGAN ===== */
+.logo {
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+  color: #ffcf00;
+}
 
-    .slogan {
-      font-size: 1rem;
-      margin-bottom: 25px;
-      font-style: italic;
-      color: #ddd;
-    }
+.slogan {
+  font-size: 1rem;
+  margin-bottom: 26px;
+  font-style: italic;
+  color: #e9e9e9;
+}
 
-    .psicologos {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+/* ===== LISTA DE PSICÓLOGOS ===== */
+.psicologos {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
 
-    .psicologo-card {
-      background: rgba(255, 255, 255, 0.12);
-      padding: 12px 14px;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: 0.28s;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      text-decoration: none;
-      color: inherit;
-      text-align: left;
-    }
+.psicologo-card {
+  background: rgba(255, 255, 255, 0.12);
+  padding: 15px 18px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: 0.28s;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  text-decoration: none;
+  color: inherit;
+  text-align: left;
+  box-shadow: 0 5px 18px rgba(0,0,0,0.3);
+}
 
-    .psicologo-card:hover {
-      background: rgba(255, 255, 255, 0.25);
-      transform: scale(1.02);
-    }
+.psicologo-card:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.45);
+}
 
-    .psicologo-card img {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid #ffffff;
-      flex-shrink: 0;
-    }
+/* ===== FOTO ===== */
+.psicologo-card img {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ffcf00;
+  flex-shrink: 0;
+}
 
-    .psicologo-card strong {
-      font-size: 1.05rem;
-      color: #ffffff;
-      display: block;
-      line-height: 1.1;
-    }
+/* ===== TEXTO ===== */
+.psicologo-card strong {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  display: block;
+  line-height: 1.1;
+}
 
-    .psicologo-card .info {
-      font-size: 0.95rem;
-      color: #f0f0f0;
-      opacity: 0.95;
-    }
+.psicologo-card .info {
+  font-size: 0.95rem;
+  color: #e8e8e8;
+}
 
-    .cadastro {
-      margin-top: 22px;
-    }
+/* ===== CADASTRO / LINK ===== */
+.cadastro {
+  margin-top: 26px;
+}
 
-    .cadastro a {
-      color: #ffffff;
-      text-decoration: none;
-      font-weight: bold;
-    }
+.cadastro a {
+  color: #ffcf00;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.2s;
+}
 
-    .cadastro a:hover {
-      text-decoration: underline;
-    }
+.cadastro a:hover {
+  text-shadow: 0 0 8px #ffcf00;
+  text-decoration: underline;
+}
 
-    .empty {
-      color: #f7f7f7;
-      opacity: 0.9;
-      padding: 12px 0;
-    }
+/* ===== EMPTY STATE ===== */
+.empty {
+  color: #fff;
+  opacity: 0.8;
+  padding: 12px 0;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 430px) {
+  .container {
+    padding: 35px;
+  }
+  .logo {
+    font-size: 2.1rem;
+  }
+}
+
   </style>
 </head>
 <body>

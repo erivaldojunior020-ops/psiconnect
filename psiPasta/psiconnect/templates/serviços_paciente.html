@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serviços - Psiconnect</title>
+
+<style>
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ===== BODY ===== */
+body {
+    font-family: "Poppins", Arial, sans-serif;
+    background: linear-gradient(135deg, #6a00ff, #007bff);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* ===== HEADER ===== */
+header {
+    width: 100%;
+    text-align: center;
+    padding: 25px 10px;
+    background: rgba(15, 18, 70, 0.7);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.8em;
+    color: #ffcf00;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+/* ===== MENU ===== */
+.menu {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.menu a {
+    background-color: rgba(255, 255, 255, 0.18);
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.menu a:hover {
+    background-color: rgba(255, 255, 255, 0.35);
+    transform: scale(1.05);
+}
+
+/* ===== SEÇÃO SERVIÇOS ===== */
+.servicos {
+    width: 100%;
+    padding: 60px 20px;
+    text-align: center;
+    max-width: 1100px;
+}
+
+.servicos h2 {
+    font-size: 2.4em;
+    margin-bottom: 10px;
+    color: #ffcf00;
+}
+
+.descricao-servicos {
+    font-size: 1.2em;
+    color: #e0e0e0;
+    margin-bottom: 40px;
+}
+
+/* Cards container */
+.container-servicos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    width: 100%;
+}
+
+/* Card */
+.card-servico {
+    background: rgba(15, 18, 70, 0.55);
+    border-radius: 18px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    transition: 0.3s;
+}
+
+.card-servico:hover {
+    transform: translateY(-8px);
+    background: rgba(15, 18, 70, 0.75);
+}
+
+.card-servico .icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    animation: pulse 2s infinite;
+}
+
+/* Icon Animation */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.card-servico h3 {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+    color: #ffcf00;
+}
+
+.card-servico p {
+    font-size: 1em;
+    color: #e7e7e7;
+    margin-bottom: 20px;
+}
+
+/* Botão */
+.btn {
+    display: inline-block;
+    padding: 14px 28px;
+    background-color: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background-color: rgba(255, 255, 255, 0.35);
+    transform: scale(1.05);
+}
+
+/* Responsividade */
+@media (max-width: 700px) {
+    header h1 {
+        font-size: 2.2em;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Psiconnect</h1>
+
+    <div class="menu">
+        <a href="{% url 'inicio_paciente' %}">Início</a>
+        <a href="{% url 'sobre_paciente' %}">Sobre</a>
+        <a href="{% url 'serviços_paciente' %}">Serviços</a>
+        <a href="{% url 'suporte_paciente' %}">Suporte</a>
+        <a href="{% url 'sessoes_paciente' %}">Sessões</a>
+    </div>
+</header>
+
+<!-- SEÇÃO SERVIÇOS -->
+<section class="servicos">
+    <h2>Nossos Serviços</h2>
+    <p class="descricao-servicos">Conheça o que oferecemos para o seu bem-estar</p>
+
+    <div class="container-servicos">
+
+        <div class="card-servico">
+            <div class="icon">💻</div>
+            <h3>Atendimento Online</h3>
+            <p>Sessões psicológicas seguras e práticas, direto da sua casa.</p>
+            <a class="btn">Saiba mais</a>
+        </div>
+
+        <div class="card-servico">
+            <div class="icon">👨‍👩‍👧‍👦</div>
+            <h3>Terapia Familiar</h3>
+            <p>Fortaleça os vínculos e melhore a comunicação entre familiares.</p>
+            <a class="btn">Saiba mais</a>
+        </div>
+
+        <div class="card-servico">
+            <div class="icon">🧠</div>
+            <h3>Psicoterapia Individual</h3>
+            <p>Apoio personalizado para sua saúde mental e bem-estar.</p>
+            <a class="btn">Saiba mais</a>
+        </div>
+
+    </div>
+</section>
+
+</body>
+</html>

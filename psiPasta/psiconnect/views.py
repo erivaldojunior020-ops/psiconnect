@@ -108,6 +108,35 @@ def agendamento_paciente(request, psicologo_id):
     })
 
 
+@login_required
+def serviços_paciente(request):
+    if request.user.user_type != "paciente":
+        return redirect("login_paciente")
+
+    return render(request, "serviços_paciente.html")
+
+
+
+@login_required
+def suporte_paciente(request):
+    if request.user.user_type != "paciente":
+        return redirect("login_paciente")
+
+    return render(request, "suporte_paciente.html")
+
+
+
+@login_required
+def sobre_paciente(request):
+    if request.user.user_type != "paciente":
+        return redirect("login_paciente")
+
+    return render(request, "sobre_paciente.html")
+
+
+
+
+
 @login_required(login_url="/auth/login_psicologo/")
 def cadastrar_horario(request):
 
@@ -323,17 +352,6 @@ def pendente_consulta(request, id):
     consulta.status = "pendente"
     consulta.save()
     return redirect("consultas_psicologo")
-
-
-
-
-
-
-
-
-
-
-
 
 def chat(request, consulta_id):
     consulta = get_object_or_404(Sessao, id=consulta_id)
