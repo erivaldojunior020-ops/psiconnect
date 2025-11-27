@@ -1,1 +1,2 @@
-web: gunicorn psiconfig.wsgi
+web: gunicorn psiconfig.wsgi:application
+
