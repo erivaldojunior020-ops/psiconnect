@@ -9,10 +9,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ===================================================================
 
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key-unsafe")
-DEBUG = os.getenv("DEBUG", "False") == "True"
-
+DEBUG = True
 ALLOWED_HOSTS = ["*"]
-
 
 # ===================================================================
 # APPS
@@ -30,7 +28,6 @@ INSTALLED_APPS = [
     'channels',
 ]
 
-
 # ===================================================================
 # MIDDLEWARE
 # ===================================================================
@@ -44,7 +41,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 
 ROOT_URLCONF = 'psiconfig.urls'
 
@@ -66,7 +62,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'psiconfig.wsgi.application'
 ASGI_APPLICATION = 'psiconfig.asgi.application'
 
-
 # ===================================================================
 # CHANNELS
 # ===================================================================
@@ -77,19 +72,23 @@ CHANNEL_LAYERS = {
     }
 }
 
-
 # ===================================================================
-# DATABASE — PostgreSQL (Render)
+# DATABASE — SQLite local / PostgreSQL Render
 # ===================================================================
 
-DATABASES = {
-    "default": dj_database_url.config(
-        default="postgresql://psiconnect_db_user:6ApFeLL0jgLGkS4GFo1KOlDvZPZb0uIe@dpg-d4k7sgre5dus73f2c3h0-a/psiconnect_db",
-        conn_max_age=600,
-        ssl_require=True
-    )
-}
-
+if os.getenv("DATABASE_URL"):
+    # Use PostgreSQL no Render
+    DATABASES = {
+        "default": dj_database_url.config(conn_max_age=600, ssl_require=True)
+    }
+else:
+    # Use SQLite local
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 # ===================================================================
 # AUTH USER & LOGIN
@@ -106,14 +105,12 @@ LOGIN_URL = '/auth/login_paciente/'
 LOGIN_REDIRECT_URL = '/auth/inicio_paciente/'
 LOGOUT_REDIRECT_URL = '/auth/login_paciente/'
 
-
 # ===================================================================
 # MEDIA
 # ===================================================================
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 
 # ===================================================================
 # PASSWORD VALIDATION
@@ -126,7 +123,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-
 # ===================================================================
 # INTERNACIONALIZAÇÃO
 # ===================================================================
@@ -135,7 +131,6 @@ LANGUAGE_CODE = 'pt-br'
 TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
-
 
 # ===================================================================
 # STATIC FILES
@@ -146,6 +141,5 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
-
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

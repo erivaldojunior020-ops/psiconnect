@@ -110,11 +110,11 @@ def agendamento_paciente(request, psicologo_id):
 
 
 @login_required
-def serviços_paciente(request):
+def servicos_paciente(request):
     if request.user.user_type != "paciente":
         return redirect("login_paciente")
 
-    return render(request, "serviços_paciente.html")
+    return render(request, "servicos_paciente.html")
 
 
 

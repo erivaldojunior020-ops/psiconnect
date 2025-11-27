@@ -14,7 +14,8 @@ urlpatterns = [
     path('sessoes_paciente/', views.sessoes_paciente, name='sessoes_paciente'),
     path('cancelar_sessao_ajax/<int:sessao_id>/', views.cancelar_sessao_ajax, name='cancelar_sessao_ajax'),
     path('sobre_paciente/', views.sobre_paciente, name='sobre_paciente'),
-    path('servicos_paciente/', views.serviços_paciente, name='servicos_paciente'),
+   path('servicos_paciente/', views.servicos_paciente, name='servicos_paciente'),
+
     path('suporte_paciente/', views.suporte_paciente, name='suporte_paciente'),
 
     path('login_professor/', views.login_professor, name='login_professor'),
