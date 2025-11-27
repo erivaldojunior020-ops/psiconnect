@@ -1,8 +1,6 @@
-# psiconnect/routing.py
-from django.urls import re_path
-from .consumers import ChatConsumer
+from django.urls import path
+from . import consumers
 
 websocket_urlpatterns = [
-    re_path(r"^ws/chat/(?P<consulta_id>\d+)/$", ChatConsumer.as_asgi()),
+    path("ws/chat/<int:consulta_id>/", consumers.ChatConsumer.as_asgi()),
 ]
-    

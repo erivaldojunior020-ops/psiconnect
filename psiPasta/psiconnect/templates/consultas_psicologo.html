@@ -68,9 +68,13 @@ main {
 /* ===== CONSULTAS ===== */
 .consultas {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 50px; /* Aumentei o espaçamento */
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
+
 
 /* ===== CARD ===== */
 .card {
@@ -82,7 +86,13 @@ main {
   flex-direction: column;
   gap: 14px;
   transition: transform 0.25s, box-shadow 0.25s;
+
+  /* ===== TAMANHO FIXO ===== */
+  width: 260px;
+  height: 280px;
+  overflow: hidden;
 }
+
 
 .card:hover {
   transform: scale(1.06);
@@ -103,6 +113,26 @@ main {
 .cancelado { background-color: #f44336; color: #fff; }
 
 /* ===== AÇÕES ===== */
+.acoes button {
+  display: inline-block;
+  margin-right: 10px;
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.acoes button:hover {
+  background: #f4c20d;
+  color: #1b2366;
+  transform: scale(1.08);
+}
+
 .acoes a {
   display: inline-block;
   margin-right: 10px;
@@ -127,38 +157,20 @@ main {
 
 <header>
   <h1>Consultas</h1>
-
   <div class="menu">
-    <a href="{% url 'inicio_psicologo' %}">
-      <button>Início</button>
-    </a>
-
-    <a href="{% url 'cadastrar_horario' %}">
-      <button>Cadastrar Horário</button>
-    </a>
-
-    <a href="{% url 'consultas_psicologo' %}">
-      <button>Consultas</button>
-    </a>
-
-    <a href="{% url 'perfil_psicologo' %}">
-      <button>Perfil</button>
-    </a>
-
-    <form action="{% url 'login_psicologo' %}" method="post">
-      {% csrf_token %}
-    </form>
+    <a href="{% url 'inicio_psicologo' %}"><button>Início</button></a>
+    <a href="{% url 'cadastrar_horario' %}"><button>Cadastrar Horário</button></a>
+    <a href="{% url 'consultas_psicologo' %}"><button>Consultas</button></a>
+    <a href="{% url 'perfil_psicologo' %}"><button>Perfil</button></a>
   </div>
 </header>
 
 <main>
 
   <div class="consultas">
-
     {% for consulta in consultas %}
-    <div class="card">
+    <div class="card" id="consulta-{{ consulta.id }}">
       <h3>{{ consulta.paciente.email }}</h3>
-
       <p>Data: {{ consulta.data|date:"d/m/Y" }}</p>
       <p>Horário: {{ consulta.hora|time:"H:i" }}</p>
 
@@ -166,8 +178,7 @@ main {
         <span class="status 
           {% if consulta.status == 'confirmado' %}confirmado
           {% elif consulta.status == 'cancelado' %}cancelado
-          {% else %}pendente{% endif %}
-        ">
+          {% else %}pendente{% endif %}">
           {{ consulta.get_status_display }}
         </span>
       </p>
@@ -177,9 +188,8 @@ main {
       {% endif %}
 
       <div class="acoes">
-
         {% if consulta.status == "confirmado" %}
-          <a href="{% url 'chat' consulta.id %}">💬 Chat</a>
+        <a href="{% url 'chat' consulta.id %}">💬 Chat</a>
         {% endif %}
 
         {% if consulta.status != 'confirmado' %}
@@ -187,22 +197,58 @@ main {
         {% endif %}
 
         {% if consulta.status != 'cancelado' %}
-        <a href="{% url 'cancelar_consulta' consulta.id %}">✖ Cancelar</a>
+        <button onclick="cancelarConsulta({{ consulta.id }})">✖ Cancelar</button>
         {% endif %}
 
         {% if consulta.status != 'pendente' %}
         <a href="{% url 'pendente_consulta' consulta.id %}">⟳ Pendente</a>
         {% endif %}
       </div>
-
     </div>
     {% empty %}
     <p>💬 Nenhuma consulta encontrada.</p>
     {% endfor %}
-
   </div>
 
 </main>
+
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+const csrftoken = getCookie('csrftoken');
+
+function cancelarConsulta(consultaId) {
+    fetch(`/auth/consulta/${consultaId}/cancelar/`, {  // ajuste o /auth/ se necessário
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success) {
+            const card = document.getElementById(`consulta-${consultaId}`);
+            if(card) card.remove();
+        } else {
+            alert('Erro ao cancelar a consulta.');
+        }
+    })
+    .catch(() => alert('Erro ao conectar com o servidor.'));
+}
+</script>
 
 </body>
 </html>

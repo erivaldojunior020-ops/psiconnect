@@ -6,197 +6,249 @@
   <title>Psiconnect - Chat</title>
 
   <style>
-/* ===== BODY ===== */
-body {
-  margin: 0;
-  font-family: 'Poppins', Arial, sans-serif;
-  background: linear-gradient(135deg, #6a00ff, #007bff);
-  color: #fff;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+    /* ===== CORES DA PSICONNECT (PADRÃO QUE VOCÊ MANDOU) ===== */
+    :root {
+      --grad1: #6a00ff;
+      --grad2: #007bff;
+      --vidro: rgba(255,255,255,0.12);
+      --vidro-borda: rgba(255,255,255,0.18);
+      --input: rgba(255,255,255,0.18);
+      --input-focus: rgba(255,255,255,0.28);
+      --msg-user: rgba(255,255,255,0.22);
+      --msg-outro: rgba(0,0,0,0.22);
+      --amarelo: #ffcf00;
+      --amarelo-hover: #ffe676;
+      --texto: #fff;
+    }
 
-/* ===== HEADER ===== */
-header {
-  text-align: center;
-  padding: 25px 0;
-}
+    /* ===== BODY ===== */
+    body {
+      margin: 0;
+      font-family: "Poppins", Arial, sans-serif;
+      background: linear-gradient(135deg, var(--grad1), var(--grad2));
+      color: var(--texto);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-header h1 {
-  font-size: 2.4em;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
+    /* ===== HEADER ===== */
+    header {
+      text-align: center;
+      padding: 20px 0;
+    }
 
-/* ===== MAIN ===== */
-main {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  padding: 25px;
-  width: 100%;
-}
+    header h1 {
+      margin: 0;
+      font-size: 2.2em;
+      font-weight: bold;
+      color: var(--texto);
+      text-shadow: 0 0 8px rgba(255,255,255,0.3);
+    }
 
-/* ===== CHAT BOX ===== */
-.chat-container {
-  background: rgba(25, 30, 75, 0.45);
-  backdrop-filter: blur(12px);
-  border-radius: 22px;
-  padding: 22px;
-  max-width: 640px;
-  width: 100%;
-  height: 520px;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
-  display: flex;
-  flex-direction: column;
-  border: 1px solid rgba(255,255,255,0.12);
-  animation: fadeIn 0.6s ease-in-out;
-}
+    /* ===== BOTÃO VOLTAR ===== */
+    .voltar-btn {
+      background-color: var(--amarelo);
+      color: #333;
+      font-weight: bold;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 16px;
+      cursor: pointer;
+      margin: 10px auto 0;
+      display: block;
+      transition: 0.25s;
+      box-shadow: 0 0 10px rgba(255,207,0,0.45);
+    }
 
-/* ===== MESSAGES AREA ===== */
-.messages {
-  flex: 1;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding-right: 10px;
-}
+    .voltar-btn:hover {
+      background-color: var(--amarelo-hover);
+      transform: translateY(-3px);
+    }
 
-/* ===== MESSAGE BUBBLES ===== */
-.message {
-  padding: 12px 18px;
-  border-radius: 18px;
-  max-width: 78%;
-  font-size: 1rem;
-  word-wrap: break-word;
-  animation: pop 0.25s ease;
-}
+    /* ===== CONTAINER PRINCIPAL ===== */
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      width: 100%;
+    }
 
-/* Sent by user */
-.sent {
-  align-self: flex-end;
-  background: linear-gradient(135deg, #8d5eff, #6a00ff);
-}
+    .chat-container {
+      background: var(--vidro);
+      border: 1px solid var(--vidro-borda);
+      border-radius: 20px;
+      padding: 20px;
+      max-width: 650px;
+      width: 100%;
+      height: 520px;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    }
 
-/* Received */
-.received {
-  align-self: flex-start;
-  background: rgba(255,255,255,0.18);
-  border: 1px solid rgba(255,255,255,0.25);
-}
+    /* ===== LISTA DE MENSAGENS ===== */
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-right: 10px;
+    }
 
-/* Timestamp */
-.time {
-  font-size: 0.75em;
-  opacity: 0.75;
-  margin-top: 6px;
-  text-align: right;
-}
+    /* ===== BOLHAS DE MENSAGEM ===== */
+    .message {
+      padding: 12px 18px;
+      border-radius: 18px;
+      max-width: 75%;
+      word-wrap: break-word;
+      font-size: 1em;
+      line-height: 1.3;
+      position: relative;
+      backdrop-filter: blur(4px);
+    }
 
-/* ===== INPUT AREA ===== */
-.input-area {
-  display: flex;
-  gap: 12px;
-  margin-top: 18px;
-}
+    /* Enviadas pelo usuário */
+    .sent {
+      align-self: flex-end;
+      background: var(--msg-user);
+      border: 1px solid rgba(255,255,255,0.32);
+      color: #fff;
+      border-bottom-right-radius: 5px;
+    }
 
-.input-area input {
-  flex: 1;
-  padding: 12px 15px;
-  border-radius: 14px;
-  border: none;
-  font-size: 1rem;
-  background: rgba(255,255,255,0.14);
-  color: #fff;
-  outline: none;
-}
+    /* Recebidas */
+    .received {
+      align-self: flex-start;
+      background: var(--msg-outro);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      border-bottom-left-radius: 5px;
+    }
 
-.input-area button {
-  padding: 12px 22px;
-  border-radius: 14px;
-  border: none;
-  background: #ffcf00;
-  color: #333;
-  font-weight: 700;
-  cursor: pointer;
-}
+    /* ===== ÁREA DE ENVIO ===== */
+    .input-area {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 12px 15px;
+      border-radius: 14px;
+      border: none;
+      font-size: 1em;
+      background: var(--input);
+      color: var(--texto);
+      transition: 0.25s;
+    }
+
+    .input-area input:focus {
+      background: var(--input-focus);
+      outline: none;
+      box-shadow: 0 0 10px #8d5eff;
+    }
+
+    .input-area input::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+
+    .input-area button {
+      padding: 12px 20px;
+      border-radius: 14px;
+      border: none;
+      background-color: var(--amarelo);
+      color: #333;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.25s;
+      box-shadow: 0 0 10px rgba(255,207,0,0.45);
+    }
+
+    .input-area button:hover {
+      transform: translateY(-3px);
+      background-color: var(--amarelo-hover);
+    }
+
   </style>
 </head>
-
 <body>
 
-<header><h1>Psiconnect - Chat da Consulta</h1></header>
+<header>
+  <h1>Psiconnect</h1>
+
+  {% if request.user.is_authenticated and request.user.user_type == "psicologo" %}
+    <button class="voltar-btn" onclick="window.location.href='{% url 'inicio_psicologo' %}'">
+      Voltar ao início
+    </button>
+  {% else %}
+    <button class="voltar-btn" onclick="window.location.href='{% url 'inicio_paciente' %}'">
+      Voltar ao início
+    </button>
+  {% endif %}
+</header>
 
 <main>
   <div class="chat-container">
-
     <div class="messages" id="messages">
-      {% for m in mensagens %}
-        <div class="message {% if m.remetente == user %}sent{% else %}received{% endif %}">
-            {{ m.texto }}
-            <div class="time">{{ m.data_envio|date:"H:i" }}</div>
+
+      {% for msg in mensagens %}
+        <div class="message {% if msg.remetente == user %}sent{% else %}received{% endif %}">
+          {{ msg.texto }}
         </div>
       {% endfor %}
+
     </div>
 
     <div class="input-area">
-      <input type="text" id="msgInput" placeholder="Digite sua mensagem...">
-      <button onclick="sendMessage()">Enviar</button>
+      <input type="text" id="mensagemInput" placeholder="Digite sua mensagem...">
+      <button id="enviarBtn">Enviar</button>
     </div>
-
   </div>
 </main>
 
 <script>
-    const consultaId = "{{ consulta.id }}";
-    const userId = "{{ user.id }}";       // AGORA ENVIAMOS O ID!!
-    const userName = "{{ user.username }}";
+const consultaId = "{{ consulta.id }}";
+const userName = "{{ request.user.username }}";
 
-    const wsUrl = `ws://${location.hostname}:${location.port}/ws/chat/${consultaId}/`;
-    console.log("WS URL:", wsUrl);
-    const chatSocket = new WebSocket(wsUrl);
+const chatSocket = new WebSocket(
+    "ws://" + window.location.host + "/ws/chat/" + consultaId + "/"
+);
 
-    // Recebendo mensagens do servidor
-    chatSocket.onmessage = e => {
-        const data = JSON.parse(e.data);
-        addMessage(data.texto, data.remetente, data.hora);
-    };
+const messagesDiv = document.getElementById("messages");
 
-    // Enviar mensagem
-    function sendMessage() {
-        const input = document.getElementById("msgInput");
-        const msg = input.value.trim();
+chatSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
 
-        if (!msg) return;
+    const div = document.createElement("div");
+    div.classList.add("message");
+    div.classList.add(data.user === userName ? "sent" : "received");
+    div.textContent = data.message;
 
-        chatSocket.send(JSON.stringify({
-            texto: msg,
-            hora: new Date().toLocaleTimeString().slice(0,5),
-            remetente: userId   // AGORA O BACKEND ACEITA
-        }));
+    messagesDiv.appendChild(div);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+};
 
+document.getElementById("enviarBtn").onclick = enviarMensagem;
+
+document.getElementById("mensagemInput").addEventListener("keypress", function(e) {
+    if(e.key === "Enter") enviarMensagem();
+});
+
+function enviarMensagem() {
+    const input = document.getElementById("mensagemInput");
+    const message = input.value.trim();
+
+    if(message !== "") {
+        chatSocket.send(JSON.stringify({ "message": message }));
         input.value = "";
     }
-
-    // Exibir mensagem na tela
-    function addMessage(texto, remetente, hora) {
-        const box = document.getElementById("messages");
-
-        const div = document.createElement("div");
-        div.classList.add("message");
-
-        // Se o nome do remetente vindo do backend for o mesmo do usuário atual
-        div.classList.add(remetente === userName ? "sent" : "received");
-
-        div.innerHTML = `${texto}<div class="time">${hora}</div>`;
-
-        box.appendChild(div);
-        box.scrollTop = box.scrollHeight;
-    }
+}
 </script>
-
 
 </body>
 </html>

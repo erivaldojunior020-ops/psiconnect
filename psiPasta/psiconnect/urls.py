@@ -9,6 +9,7 @@ urlpatterns = [
     path('lista_psicologos/', views.lista_psicologos, name='lista_psicologos'),
     path('agendamento_paciente/<int:psicologo_id>/', views.agendamento_paciente, name='agendamento_paciente'),
     path('sessoes_paciente/', views.sessoes_paciente, name='sessoes_paciente'),
+     path('cancelar_sessao_ajax/<int:sessao_id>/', views.cancelar_sessao_ajax, name='cancelar_sessao_ajax'),
     path('sobre_paciente/', views.sobre_paciente, name='sobre_paciente'),
     path('serviços_paciente/', views.serviços_paciente, name='serviços_paciente'),
     path('suporte_paciente/', views.suporte_paciente, name='suporte_paciente'),

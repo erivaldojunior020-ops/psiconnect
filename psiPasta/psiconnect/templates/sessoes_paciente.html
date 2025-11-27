@@ -127,6 +127,23 @@ h2 {
     color: #eaeaea;
 }
 
+.info button {
+    background: #ff4d4d;
+    padding: 10px 15px;
+    border-radius: 6px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 1em;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.info button:hover {
+    background: #ff1a1a;
+}
+
 /* ===== RESPONSIVO ===== */
 @media (max-width: 650px) {
     .card {
@@ -139,7 +156,6 @@ h2 {
         height: 110px;
     }
 }
-
 </style>
 </head>
 <body>
@@ -148,9 +164,9 @@ h2 {
   <h1>Psiconnect</h1>
   <div class="menu">
     <a href="{% url 'inicio_paciente' %}">Início</a>
-    <a href="{% url 'sobre_paciente' %}">Sobre</a>
-    <a href="{% url 'serviços_paciente' %}">Serviços</a>
     <a href="{% url 'suporte_paciente' %}">Suporte</a>
+    <a href="{% url 'serviços_paciente' %}">Serviços</a>
+    <a href="{% url 'sobre_paciente' %}">Sobre</a>
     <a href="{% url 'sessoes_paciente' %}">Sessões</a>
   </div>
 </header>
@@ -162,49 +178,40 @@ h2 {
 
         {% if sessoes %}
             {% for s in sessoes %}
-                
-                <div class="card">
+                {% if s.status != "cancelado" %}
+                <div class="card" id="sessao-{{ s.id }}">
 
-    <!-- Foto -->
-    <img src="{{ s.psicologo.foto.url }}" alt="Foto Psicólogo">
+                    <img src="{{ s.psicologo.foto.url }}" alt="Foto Psicólogo">
 
-    <div class="info">
-        <h3>{{ s.psicologo.nome }}</h3>
+                    <div class="info">
+                        <h3>{{ s.psicologo.nome_completo }}</h3>
+                        <p><strong>Data:</strong> {{ s.data|date:"d/m/Y" }}</p>
+                        <p><strong>Horário:</strong> {{ s.hora|time:"H:i" }}</p>
 
-        <p><strong>Data:</strong> {{ s.data|date:"d/m/Y" }}</p>
-        <p><strong>Horário:</strong> {{ s.hora|time:"H:i" }}</p>
+                        <p>
+                            <strong>Status:</strong>
+                            {% if s.status == "confirmado" %}
+                                <span style="color: #00ff80; font-weight: bold;">Confirmado</span>
+                            {% else %}
+                                <span style="color: #fff8a6; font-weight: bold;">Pendente</span>
+                            {% endif %}
+                        </p>
 
-        <p>
-            <strong>Status:</strong>
-            {% if s.status == "confirmado" %}
-                <span style="color: #00ff80; font-weight: bold;">Confirmado</span>
-            {% elif s.status == "cancelado" %}
-                <span style="color: #ff4d4d; font-weight: bold;">Cancelado</span>
-            {% else %}
-                <span style="color: #fff8a6; font-weight: bold;">Pendente</span>
-            {% endif %}
-        </p>
+                        {% if s.observacoes %}
+                            <p><strong>Observações:</strong> {{ s.observacoes }}</p>
+                        {% endif %}
 
-        {% if s.observacoes %}
-            <p><strong>Observações:</strong> {{ s.observacoes }}</p>
-        {% endif %}
+                        {% if s.status == "confirmado" %}
+                        <a href="{% url 'chat' s.id %}">
+                            <button style="background: #0a8;">Ir para o chat</button>
+                        </a>
+                        {% endif %}
 
-        <!-- Botão aparece somente se o psicólogo confirmar -->
-       {% if s.status == "confirmado" %}
-    <a href="{% url 'chat' s.id %}">
-        <button style="background: #0a8; padding: 10px 15px; border-radius: 6px; 
-                       color: white; border: none; cursor: pointer; margin-top: 10px;
-                       font-size: 1em; font-weight: bold;">
-            Ir para o chat com o psicólogo
-        </button>
-    </a>
-{% endif %}
+                        <button onclick="cancelarSessao({{ s.id }})">Cancelar Sessão</button>
+                    </div>
 
-    </div>
-
-</div>
-
-
+                </div>
+                {% endif %}
             {% endfor %}
         {% else %}
             <p>Nenhuma sessão agendada ainda.</p>
@@ -213,6 +220,44 @@ h2 {
     </div>
 
 </main>
+
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+const csrftoken = getCookie('csrftoken');
+
+function cancelarSessao(sessaoId) {
+    fetch(`/auth/cancelar_sessao_ajax/${sessaoId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const card = document.getElementById(`sessao-${sessaoId}`);
+            if (card) card.remove();
+        } else {
+            alert('Erro ao cancelar a sessão.');
+        }
+    })
+    .catch(() => alert('Erro ao conectar com o servidor.'));
+}
+</script>
 
 </body>
 </html>

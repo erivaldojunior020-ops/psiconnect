@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from datetime import datetime
 from datetime import date
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from .models import PerfilPsicologo, Sessao, HorarioDisponivel, Mensagem
 from django.contrib.auth.models import User
@@ -135,8 +136,6 @@ def sobre_paciente(request):
 
 
 
-
-
 @login_required(login_url="/auth/login_psicologo/")
 def cadastrar_horario(request):
 
@@ -164,17 +163,53 @@ def cadastrar_horario(request):
         messages.success(request, "Horário cadastrado com sucesso!")
         return redirect("cadastrar_horario")
 
-    horarios = HorarioDisponivel.objects.filter(psicologo=psicologo).order_by("data", "hora")
+    # Data e hora atual
+    agora = timezone.now()
+
+    # Query filtrando:
+    # 1. Horários do psicólogo
+    # 2. Disponíveis (não cancelados)
+    # 3. Datas futuras ou hoje com horário ainda não passado
+    horarios = HorarioDisponivel.objects.filter(
+        psicologo=psicologo,
+        disponivel=True
+    ).order_by("data", "hora")
+
+    # Remover horários passados
+    horarios = [
+        h for h in horarios
+        if h.data > agora.date() or (h.data == agora.date() and h.hora > agora.time())
+    ]
 
     return render(request, "cadastrar_horario.html", {
         "horarios": horarios
     })
 
-    
+
 @login_required
 def sessoes_paciente(request):
-    sessoes = Sessao.objects.filter(paciente=request.user).order_by("data", "hora")
+    # Filtra apenas sessões futuras e que não foram canceladas
+    agora = timezone.now()
+    sessoes = Sessao.objects.filter(
+        paciente=request.user,
+        data__gte=agora.date()
+    ).exclude(
+        status='cancelado'
+    ).order_by("data", "hora")
+    
     return render(request, "sessoes_paciente.html", {"sessoes": sessoes})
+
+
+
+@login_required
+def cancelar_sessao_ajax(request, sessao_id):
+    if request.method == "POST":
+        sessao = get_object_or_404(Sessao, id=sessao_id, paciente=request.user)
+        sessao.status = "cancelado"
+        sessao.save()
+        return JsonResponse({"success": True})
+    return JsonResponse({"success": False}, status=400)
+
 
 
 
@@ -302,24 +337,21 @@ def perfil_psicologo(request):
     }
     return render(request, "perfil_psicologo.html", context)
 
-
 def consultas_psicologo(request):
     if not request.user.is_authenticated or request.user.user_type != "psicologo":
         return redirect("login_psicologo")
 
     psicologo = request.user.perfil_psicologo
+    agora = timezone.now()
 
-    # Lista todas as sessões marcadas para esse psicólogo
-    consultas = Sessao.objects.filter(psicologo=psicologo).order_by("data", "hora")
-
-    # Se já passou da data → marca como pendente (se estiver confirmado)
-    for c in consultas:
-        if c.data < date.today() and c.status == "pendente":
-            c.save()
-
-
+    # Só consultas futuras e que não foram canceladas
+    consultas = Sessao.objects.filter(
+        psicologo=psicologo,
+        data__gte=agora.date()
+    ).exclude(status='cancelado').order_by("data", "hora")
 
     return render(request, "consultas_psicologo.html", {"consultas": consultas})
+
 
 def confirmar_consulta(request, id):
     consulta = Sessao.objects.get(id=id)
@@ -332,15 +364,20 @@ def confirmar_consulta(request, id):
     return redirect("consultas_psicologo")
 
 
+@login_required
 def cancelar_consulta(request, id):
-    consulta = Sessao.objects.get(id=id)
+    if request.method == "POST":
+        consulta = get_object_or_404(Sessao, id=id)
 
-    if request.user.perfil_psicologo != consulta.psicologo:
-        return redirect("inicio_psicologo")
+        # Verifica se quem cancela é paciente da sessão ou psicólogo responsável
+        if request.user == consulta.paciente or getattr(request.user, 'perfil_psicologo', None) == consulta.psicologo:
+            consulta.status = "cancelado"
+            consulta.save()
+            return JsonResponse({"success": True})
+        else:
+            return JsonResponse({"success": False, "error": "Sem permissão"}, status=403)
 
-    consulta.status = "cancelado"
-    consulta.save()
-    return redirect("consultas_psicologo")
+    return JsonResponse({"success": False, "error": "Método inválido"}, status=400)
 
 
 def pendente_consulta(request, id):
@@ -353,6 +390,7 @@ def pendente_consulta(request, id):
     consulta.save()
     return redirect("consultas_psicologo")
 
+
 def chat(request, consulta_id):
     consulta = get_object_or_404(Sessao, id=consulta_id)
 
@@ -360,18 +398,8 @@ def chat(request, consulta_id):
     if request.user not in [consulta.paciente, consulta.psicologo.user]:
         return redirect("inicio_paciente")
 
+    # Busca histórico de mensagens da consulta
     mensagens = Mensagem.objects.filter(consulta=consulta).order_by("data_envio")
-
-    if request.method == "POST":
-        texto = request.POST.get("mensagem")
-        if texto.strip():
-            Mensagem.objects.create(
-                remetente=request.user,
-                destinatario=consulta.paciente if request.user == consulta.psicologo.user else consulta.psicologo.user,
-                consulta=consulta,
-                texto=texto,
-            )
-        return redirect("chat", consulta_id=consulta.id)
 
     return render(request, "chat.html", {
         "consulta": consulta,

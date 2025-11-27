@@ -99,12 +99,6 @@ class Mensagem(models.Model):
         return f"{self.remetente} → {self.destinatario} ({self.consulta.id})"
 
 
-
-
-
-
-
-
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.consulta_id = self.scope["url_route"]["kwargs"]["consulta_id"]
