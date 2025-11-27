@@ -406,3 +406,7 @@ def chat(request, consulta_id):
         "mensagens": mensagens
     })
 
+from django.shortcuts import redirect
+
+def home(request):
+    return redirect('login_paciente')
