@@ -1,22 +1,22 @@
 from pathlib import Path
 import os
-import dj_database_url   # <-- IMPORTANTE para o PostgreSQL no Render
+import dj_database_url
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# ===================================================================
+# VARIÁVEIS DE AMBIENTE (Render + Local)
+# ===================================================================
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key-unsafe")
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
-SECRET_KEY = 'django-insecure-qum2*v2j$6ezhvc)qx)ab-wuj(#xyo$84-y%%eib6n=*wa#b8&'
-
-DEBUG = True
-
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 
-# Application definition
+# ===================================================================
+# APPS
+# ===================================================================
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -26,13 +26,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Seu app principal
     'psiconnect',
-
-    # WebSockets
     'channels',
 ]
 
+
+# ===================================================================
+# MIDDLEWARE
+# ===================================================================
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -43,6 +44,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'psiconfig.urls'
 
@@ -62,8 +64,12 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'psiconfig.wsgi.application'
-ASGI_APPLICATION = "psiconfig.asgi.application"
+ASGI_APPLICATION = 'psiconfig.asgi.application'
 
+
+# ===================================================================
+# CHANNELS
+# ===================================================================
 
 CHANNEL_LAYERS = {
     "default": {
@@ -77,15 +83,18 @@ CHANNEL_LAYERS = {
 # ===================================================================
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgresql://psiconnect_db_user:6ApFeLL0jgLGkS4GFo1KOlDvZPZb0uIe@dpg-d4k7sgre5dus73f2c3h0-a/psiconnect_db',  
+    "default": dj_database_url.config(
+        default="postgresql://psiconnect_db_user:6ApFeLL0jgLGkS4GFo1KOlDvZPZb0uIe@dpg-d4k7sgre5dus73f2c3h0-a/psiconnect_db",
         conn_max_age=600,
         ssl_require=True
     )
 }
 
 
-# Auth User Model
+# ===================================================================
+# AUTH USER & LOGIN
+# ===================================================================
+
 AUTH_USER_MODEL = 'psiconnect.CustomUser'
 
 AUTHENTICATION_BACKENDS = [
@@ -93,19 +102,23 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-
-# MEDIA
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
-# LOGIN
 LOGIN_URL = '/auth/login_paciente/'
 LOGIN_REDIRECT_URL = '/auth/inicio_paciente/'
 LOGOUT_REDIRECT_URL = '/auth/login_paciente/'
 
 
-# Password validation
+# ===================================================================
+# MEDIA
+# ===================================================================
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# ===================================================================
+# PASSWORD VALIDATION
+# ===================================================================
+
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -114,15 +127,25 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+# ===================================================================
+# INTERNACIONALIZAÇÃO
+# ===================================================================
+
+LANGUAGE_CODE = 'pt-br'
+TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
 
 
-# Static files
+# ===================================================================
+# STATIC FILES
+# ===================================================================
+
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
