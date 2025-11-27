@@ -1,6 +1,6 @@
-
 from pathlib import Path
 import os
+import dj_database_url   # <-- IMPORTANTE para o PostgreSQL no Render
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -9,13 +9,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-qum2*v2j$6ezhvc)qx)ab-wuj(#xyo$84-y%%eib6n=*wa#b8&'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -74,76 +72,57 @@ CHANNEL_LAYERS = {
 }
 
 
-
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+# ===================================================================
+# DATABASE — PostgreSQL (Render)
+# ===================================================================
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'psiconnect',
-        'USER': 'root',
-        'PASSWORD': 'beris007',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
+    'default': dj_database_url.config(
+        default='postgresql://psiconnect_db_user:6ApFeLL0jgLGkS4GFo1KOlDvZPZb0uIe@dpg-d4k7sgre5dus73f2c3h0-a/psiconnect_db',  
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
+
+# Auth User Model
 AUTH_USER_MODEL = 'psiconnect.CustomUser'
 
 AUTHENTICATION_BACKENDS = [
-    'psiconnect.backends.EmailBackend',  # ← substitua 'seu_app' pelo nome real do app
+    'psiconnect.backends.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
 
+# MEDIA
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-
+# LOGIN
 LOGIN_URL = '/auth/login_paciente/'
 LOGIN_REDIRECT_URL = '/auth/inicio_paciente/'
 LOGOUT_REDIRECT_URL = '/auth/login_paciente/'
 
 
 # Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
-STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
+# Static files
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
